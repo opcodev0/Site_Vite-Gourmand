@@ -1,0 +1,334 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --vg-cream:#FAF8F3;--vg-dark:#1C1810;--vg-gold:#B8860B;--vg-gold-light:#D4A520;
+    --vg-warm:#F5EFE0;--vg-muted:#7A6E5A;--vg-border:#E8DFC8;--vg-green:#2D4A2D;
+    --vg-error:#A32D2D;--vg-error-bg:#FCEBEB;
+  }
+  body{font-family:'DM Sans',sans-serif;background:var(--vg-dark);min-height:100vh;display:flex;flex-direction:column;}
+
+  nav{background:var(--vg-dark);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:64px;border-bottom:1px solid #2A2218;}
+  .nav-logo{font-family:'Playfair Display',serif;color:#FAF8F3;font-size:1.25rem;letter-spacing:0.04em;cursor:pointer;}
+  .nav-logo span{color:var(--vg-gold-light);}
+  .nav-back{color:#6B6050;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px;cursor:pointer;border:none;background:none;}
+  .nav-back:hover{color:#C8BFA8;}
+
+  .page-wrap{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 64px);}
+
+  /* LEFT PANEL */
+  .left-panel{background:#141008;display:flex;flex-direction:column;justify-content:space-between;padding:4rem 3rem;position:relative;overflow:hidden;}
+  .left-deco{position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;border:1px solid #2A2218;opacity:0.5;}
+  .left-deco2{position:absolute;bottom:-80px;left:-80px;width:320px;height:320px;border-radius:50%;border:1px solid #2A2218;opacity:0.3;}
+  .left-quote{font-family:'Playfair Display',serif;font-size:1.6rem;line-height:1.4;color:#FAF8F3;margin-bottom:1.5rem;}
+  .left-quote em{color:var(--vg-gold-light);font-style:italic;}
+  .left-sub{color:#6B6050;font-size:0.9rem;line-height:1.7;max-width:320px;}
+  .left-bottom{}
+  .left-tag{font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.5rem;}
+  .left-stat{font-family:'Playfair Display',serif;font-size:2.5rem;color:#FAF8F3;}
+  .left-stat-label{color:#4A4035;font-size:0.8rem;margin-top:2px;}
+
+  /* RIGHT PANEL — TABS */
+  .right-panel{background:var(--vg-cream);display:flex;align-items:center;justify-content:center;padding:3rem 2.5rem;}
+  .form-container{width:100%;max-width:400px;}
+
+  .tabs{display:flex;border-bottom:1px solid var(--vg-border);margin-bottom:2rem;}
+  .tab-btn{flex:1;padding:0.75rem;font-family:'DM Sans',sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;background:none;border:none;cursor:pointer;color:var(--vg-muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s;}
+  .tab-btn.active{color:var(--vg-dark);border-bottom-color:var(--vg-gold);font-weight:500;}
+
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  .form-title{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--vg-dark);margin-bottom:0.4rem;}
+  .form-sub{font-size:0.85rem;color:var(--vg-muted);margin-bottom:2rem;line-height:1.6;}
+
+  .field{margin-bottom:1.25rem;}
+  .field label{display:block;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--vg-muted);margin-bottom:6px;}
+  .field input{width:100%;padding:10px 14px;border:1px solid var(--vg-border);background:#fff;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--vg-dark);outline:none;transition:border-color 0.2s;}
+  .field input:focus{border-color:var(--vg-gold);}
+  .field input.error{border-color:var(--vg-error);}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+  .field-hint{font-size:0.75rem;color:var(--vg-muted);margin-top:4px;}
+  .field-error{font-size:0.75rem;color:var(--vg-error);margin-top:4px;display:none;}
+
+  .pw-wrap{position:relative;}
+  .pw-wrap input{padding-right:40px;}
+  .pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--vg-muted);font-size:18px;padding:0;display:flex;}
+
+  .pw-strength{margin-top:6px;}
+  .pw-bars{display:flex;gap:4px;margin-bottom:4px;}
+  .pw-bar{height:3px;flex:1;background:var(--vg-border);transition:background 0.3s;}
+  .pw-bar.weak{background:#E24B4A;}
+  .pw-bar.medium{background:#EF9F27;}
+  .pw-bar.strong{background:#639922;}
+  .pw-label{font-size:0.72rem;color:var(--vg-muted);}
+
+  .btn-submit{width:100%;padding:13px;background:var(--vg-dark);color:#FAF8F3;font-family:'DM Sans',sans-serif;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;border:none;cursor:pointer;margin-top:0.5rem;transition:background 0.2s;}
+  .btn-submit:hover{background:#2A2218;}
+
+  .divider{display:flex;align-items:center;gap:1rem;margin:1.5rem 0;}
+  .divider span{font-size:0.75rem;color:var(--vg-muted);white-space:nowrap;}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--vg-border);}
+
+  .forgot-link{text-align:right;margin-top:-0.75rem;margin-bottom:1rem;}
+  .forgot-link a{font-size:0.8rem;color:var(--vg-gold);text-decoration:none;}
+  .forgot-link a:hover{color:var(--vg-gold-light);}
+
+  .switch-text{text-align:center;font-size:0.82rem;color:var(--vg-muted);margin-top:1.5rem;}
+  .switch-text a{color:var(--vg-gold);text-decoration:none;font-weight:500;}
+
+  /* RGPD */
+  .rgpd-box{background:var(--vg-warm);border:1px solid var(--vg-border);padding:0.85rem 1rem;margin-bottom:1.25rem;display:flex;gap:0.75rem;align-items:flex-start;}
+  .rgpd-box i{color:var(--vg-gold);font-size:16px;margin-top:2px;flex-shrink:0;}
+  .rgpd-box p{font-size:0.75rem;color:var(--vg-muted);line-height:1.5;}
+  .rgpd-box a{color:var(--vg-gold);}
+
+  .checkbox-row{display:flex;align-items:flex-start;gap:0.6rem;margin-bottom:1rem;}
+  .checkbox-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--vg-dark);margin-top:2px;flex-shrink:0;}
+  .checkbox-row label{font-size:0.8rem;color:var(--vg-muted);line-height:1.5;cursor:pointer;}
+  .checkbox-row a{color:var(--vg-gold);}
+
+  .alert-success{background:#EAF3DE;border:1px solid #C0DD97;padding:0.85rem 1rem;display:flex;gap:0.6rem;align-items:center;font-size:0.82rem;color:#3B6D11;margin-bottom:1.25rem;display:none;}
+
+  /* RESET PANEL */
+  .reset-overlay{display:none;position:absolute;inset:0;background:rgba(20,16,8,0.85);align-items:center;justify-content:center;z-index:10;}
+  .reset-card{background:var(--vg-cream);padding:2.5rem;width:340px;position:relative;}
+  .reset-card h3{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--vg-dark);margin-bottom:0.4rem;}
+  .reset-card p{font-size:0.85rem;color:var(--vg-muted);line-height:1.6;margin-bottom:1.5rem;}
+  .btn-close-reset{position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;color:var(--vg-muted);font-size:20px;}
+</style>
+
+<h2 class="sr-only">Page de connexion et création de compte — Vite &amp; Gourmand</h2>
+
+<nav>
+  <div class="nav-logo">Vite &amp; <span>Gourmand</span></div>
+  <button class="nav-back"><i class="ti ti-arrow-left" aria-hidden="true"></i> Retour à l'accueil</button>
+</nav>
+
+<div class="page-wrap">
+  <div class="left-panel">
+    <div class="left-deco"></div>
+    <div class="left-deco2"></div>
+    <div>
+      <p style="font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:1.25rem;">Votre espace personnel</p>
+      <div class="left-quote">Commandez nos menus,<br>suivez vos prestations,<br><em>vivez l'expérience.</em></div>
+      <p class="left-sub">Avec votre compte, accédez à l'ensemble de nos menus, passez commande en quelques clics et suivez vos prestations en temps réel.</p>
+    </div>
+    <div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem;">
+        <div>
+          <div class="left-tag">Événements</div>
+          <div class="left-stat">500+</div>
+          <div class="left-stat-label">réalisés depuis 1999</div>
+        </div>
+        <div>
+          <div class="left-tag">Satisfaction</div>
+          <div class="left-stat">98%</div>
+          <div class="left-stat-label">de clients satisfaits</div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #2A2218;padding-top:1.5rem;">
+        <p style="font-size:0.75rem;color:#4A4035;display:flex;align-items:center;gap:6px;"><i class="ti ti-lock" aria-hidden="true" style="color:var(--vg-gold);"></i> Connexion sécurisée — vos données sont protégées (RGPD)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="form-container">
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('login')">Se connecter</button>
+        <button class="tab-btn" onclick="switchTab('register')">Créer un compte</button>
+      </div>
+
+      <!-- LOGIN TAB -->
+      <div class="tab-panel active" id="tab-login">
+        <h1 class="form-title">Bon retour.</h1>
+        <p class="form-sub">Connectez-vous avec votre adresse mail et votre mot de passe.</p>
+
+        <div class="field">
+          <label for="login-email">Adresse mail</label>
+          <input type="email" id="login-email" placeholder="votre@mail.fr" autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label for="login-pw">Mot de passe</label>
+          <div class="pw-wrap">
+            <input type="password" id="login-pw" placeholder="••••••••••" autocomplete="current-password">
+            <button class="pw-toggle" onclick="togglePw('login-pw', this)" aria-label="Afficher le mot de passe">
+              <i class="ti ti-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="forgot-link"><a href="#" onclick="openReset(event)">Mot de passe oublié ?</a></div>
+
+        <button class="btn-submit" onclick="handleLogin()">Se connecter</button>
+
+        <p class="switch-text">Pas encore de compte ? <a href="#" onclick="switchTab('register');return false;">Créer un compte</a></p>
+      </div>
+
+      <!-- REGISTER TAB -->
+      <div class="tab-panel" id="tab-register">
+        <h1 class="form-title">Rejoignez-nous.</h1>
+        <p class="form-sub">Créez votre compte pour commander nos menus et suivre vos prestations.</p>
+
+        <div id="success-msg" class="alert-success"><i class="ti ti-check" aria-hidden="true"></i> Compte créé ! Un mail de bienvenue vous a été envoyé.</div>
+
+        <div class="rgpd-box">
+          <i class="ti ti-shield-check" aria-hidden="true"></i>
+          <p>Vos données sont collectées uniquement pour la gestion de vos commandes, conformément au <a href="#">RGPD</a>. Aucune revente à des tiers.</p>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="reg-nom">Nom</label>
+            <input type="text" id="reg-nom" placeholder="Dupont" autocomplete="family-name">
+          </div>
+          <div class="field">
+            <label for="reg-prenom">Prénom</label>
+            <input type="text" id="reg-prenom" placeholder="Marie" autocomplete="given-name">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="reg-email">Adresse mail</label>
+          <input type="email" id="reg-email" placeholder="votre@mail.fr" autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label for="reg-gsm">Numéro de téléphone</label>
+          <input type="tel" id="reg-gsm" placeholder="06 12 34 56 78" autocomplete="tel">
+        </div>
+
+        <div class="field">
+          <label for="reg-adresse">Adresse postale</label>
+          <input type="text" id="reg-adresse" placeholder="12 rue des Vignes, 33000 Bordeaux" autocomplete="street-address">
+        </div>
+
+        <div class="field">
+          <label for="reg-pw">Mot de passe</label>
+          <div class="pw-wrap">
+            <input type="password" id="reg-pw" placeholder="••••••••••" oninput="checkStrength(this)" autocomplete="new-password">
+            <button class="pw-toggle" onclick="togglePw('reg-pw', this)" aria-label="Afficher le mot de passe">
+              <i class="ti ti-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="pw-strength">
+            <div class="pw-bars">
+              <div class="pw-bar" id="bar1"></div>
+              <div class="pw-bar" id="bar2"></div>
+              <div class="pw-bar" id="bar3"></div>
+              <div class="pw-bar" id="bar4"></div>
+            </div>
+            <div class="pw-label" id="pw-label">10 car. min · 1 majuscule · 1 chiffre · 1 caractère spécial</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="reg-pw2">Confirmer le mot de passe</label>
+          <div class="pw-wrap">
+            <input type="password" id="reg-pw2" placeholder="••••••••••" autocomplete="new-password">
+            <button class="pw-toggle" onclick="togglePw('reg-pw2', this)" aria-label="Afficher le mot de passe">
+              <i class="ti ti-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="field-error" id="pw-match-error">Les mots de passe ne correspondent pas.</div>
+        </div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="cgu" name="cgu">
+          <label for="cgu">J'accepte les <a href="#">conditions générales de vente</a> et la <a href="#">politique de confidentialité</a>.</label>
+        </div>
+
+        <button class="btn-submit" onclick="handleRegister()">Créer mon compte</button>
+
+        <p class="switch-text">Déjà un compte ? <a href="#" onclick="switchTab('login');return false;">Se connecter</a></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- RESET OVERLAY -->
+<div class="reset-overlay" id="reset-overlay" style="position:fixed;">
+  <div style="min-height:400px;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+    <div class="reset-card">
+      <button class="btn-close-reset" onclick="closeReset()" aria-label="Fermer"><i class="ti ti-x" aria-hidden="true"></i></button>
+      <h3>Mot de passe oublié</h3>
+      <p>Saisissez votre adresse mail. Vous recevrez un lien pour réinitialiser votre mot de passe.</p>
+      <div class="field">
+        <label for="reset-email">Adresse mail</label>
+        <input type="email" id="reset-email" placeholder="votre@mail.fr">
+      </div>
+      <div id="reset-success" style="display:none;background:#EAF3DE;border:1px solid #C0DD97;padding:0.75rem;font-size:0.82rem;color:#3B6D11;margin-bottom:1rem;display:flex;align-items:center;gap:6px;">
+        <i class="ti ti-check" aria-hidden="true"></i> Un lien de réinitialisation a été envoyé.
+      </div>
+      <button class="btn-submit" onclick="handleReset()" style="margin-top:0;">Envoyer le lien</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active', (tab==='login'&&i===0)||(tab==='register'&&i===1)));
+  document.getElementById('tab-login').classList.toggle('active', tab==='login');
+  document.getElementById('tab-register').classList.toggle('active', tab==='register');
+}
+
+function togglePw(id, btn){
+  const inp=document.getElementById(id);
+  const showing=inp.type==='text';
+  inp.type=showing?'password':'text';
+  btn.querySelector('i').className=showing?'ti ti-eye':'ti ti-eye-off';
+}
+
+function checkStrength(inp){
+  const v=inp.value;
+  const bars=[document.getElementById('bar1'),document.getElementById('bar2'),document.getElementById('bar3'),document.getElementById('bar4')];
+  const label=document.getElementById('pw-label');
+  let score=0;
+  if(v.length>=10)score++;
+  if(/[A-Z]/.test(v))score++;
+  if(/[0-9]/.test(v))score++;
+  if(/[^A-Za-z0-9]/.test(v))score++;
+  bars.forEach((b,i)=>{b.className='pw-bar';if(i<score){b.classList.add(score<=1?'weak':score<=2?'medium':'strong');}});
+  const labels=['Trop court','Faible','Moyen','Bon','Sécurisé'];
+  label.textContent=score===4?'Mot de passe sécurisé ✓':(score===0?'10 car. min · 1 majuscule · 1 chiffre · 1 caractère spécial':labels[score]);
+}
+
+function handleLogin(){
+  const email=document.getElementById('login-email').value;
+  const pw=document.getElementById('login-pw').value;
+  if(!email||!pw){
+    document.getElementById('login-email').classList.toggle('error',!email);
+    document.getElementById('login-pw').classList.toggle('error',!pw);
+    return;
+  }
+  alert('Connexion simulée — à brancher sur le backend PHP.');
+}
+
+function handleRegister(){
+  const pw=document.getElementById('reg-pw').value;
+  const pw2=document.getElementById('reg-pw2').value;
+  const errEl=document.getElementById('pw-match-error');
+  const cgu=document.getElementById('cgu').checked;
+  if(pw!==pw2){errEl.style.display='block';return;}else{errEl.style.display='none';}
+  if(!cgu){alert('Veuillez accepter les CGV.');return;}
+  const score=[pw.length>=10,/[A-Z]/.test(pw),/[0-9]/.test(pw),/[^A-Za-z0-9]/.test(pw)].filter(Boolean).length;
+  if(score<4){alert('Votre mot de passe ne respecte pas les critères de sécurité.');return;}
+  const msg=document.getElementById('success-msg');
+  msg.style.display='flex';
+  setTimeout(()=>switchTab('login'),2500);
+}
+
+function openReset(e){e.preventDefault();document.getElementById('reset-overlay').style.display='flex';}
+function closeReset(){document.getElementById('reset-overlay').style.display='none';}
+function handleReset(){
+  const email=document.getElementById('reset-email').value;
+  if(!email){document.getElementById('reset-email').classList.add('error');return;}
+  document.getElementById('reset-success').style.display='flex';
+  setTimeout(closeReset,2000);
+}
+</script>

@@ -1,0 +1,671 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --vg-cream:#FAF8F3;--vg-dark:#1C1810;--vg-gold:#B8860B;--vg-gold-light:#D4A520;
+  --vg-warm:#F5EFE0;--vg-muted:#7A6E5A;--vg-border:#E8DFC8;
+  --vg-error:#A32D2D;--vg-error-bg:#FCEBEB;
+  --vg-success:#3B6D11;--vg-success-bg:#EAF3DE;
+}
+body{font-family:'DM Sans',sans-serif;background:#EDEBE4;color:var(--vg-dark);}
+
+nav{background:var(--vg-dark);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:60px;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Playfair Display',serif;color:#FAF8F3;font-size:1.15rem;}
+.nav-logo span{color:var(--vg-gold-light);}
+.nav-right{display:flex;align-items:center;gap:1rem;}
+.nav-avatar{width:30px;height:30px;border-radius:50%;background:var(--vg-gold);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:600;color:var(--vg-dark);}
+.nav-badge{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;background:#3A1C10;color:#F09595;padding:2px 10px;}
+.nav-name{font-size:0.8rem;color:#C8BFA8;}
+.nav-logout{color:#4A4035;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;background:none;border:none;cursor:pointer;}
+
+.layout{display:grid;grid-template-columns:210px 1fr;min-height:calc(100vh - 60px);}
+
+/* SIDEBAR */
+.side-nav{background:var(--vg-dark);padding:1.5rem 0;border-right:1px solid #2A2218;}
+.side-user{padding:0 1.25rem 1.25rem;border-bottom:1px solid #2A2218;margin-bottom:0.75rem;}
+.side-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--vg-gold),#E8B820);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--vg-dark);margin-bottom:0.6rem;}
+.side-name{font-family:'Playfair Display',serif;font-size:0.95rem;color:#FAF8F3;margin-bottom:4px;}
+.side-role{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#F09595;background:#3A1C10;padding:2px 8px;display:inline-block;}
+.side-section{font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A3020;padding:0.75rem 1.25rem 0.25rem;}
+.side-link{display:flex;align-items:center;gap:10px;padding:0.6rem 1.25rem;font-size:0.8rem;color:#6B6050;cursor:pointer;transition:all 0.15s;border-left:2px solid transparent;}
+.side-link i{font-size:15px;}
+.side-link:hover{color:#C8BFA8;background:#1A140C;}
+.side-link.active{color:#FAF8F3;border-left-color:var(--vg-gold);background:#1A140C;}
+.side-notif{margin-left:auto;background:var(--vg-error);color:#fff;font-size:0.6rem;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;}
+
+/* MAIN */
+.main{padding:2rem;overflow:auto;}
+.page-hidden{display:none;}
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1.75rem;}
+.page-head-left{}
+.page-label{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.3rem;}
+.page-title{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--vg-dark);}
+
+/* STAT ROW */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:1.75rem;}
+.stat-card{background:#fff;border:1px solid var(--vg-border);padding:1rem;}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--vg-dark);}
+.stat-num.gold{color:var(--vg-gold);}
+.stat-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--vg-muted);margin-top:3px;}
+
+/* BTNS */
+.btn-primary{background:var(--vg-dark);color:#FAF8F3;padding:9px 20px;font-family:'DM Sans',sans-serif;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
+.btn-ghost{background:none;border:1px solid var(--vg-border);padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--vg-muted);cursor:pointer;}
+.btn-ghost:hover{border-color:var(--vg-dark);color:var(--vg-dark);}
+.btn-danger{background:var(--vg-error-bg);border:1px solid #F7C1C1;color:var(--vg-error);padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;gap:5px;}
+.btn-success{background:var(--vg-success-bg);border:1px solid #C0DD97;color:var(--vg-success);padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;gap:5px;}
+.btn-warning{background:#FAEEDA;border:1px solid #FAC775;color:#854F0B;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;gap:5px;}
+
+/* TABLE */
+.table-wrap{background:#fff;border:1px solid var(--vg-border);overflow:auto;margin-bottom:1.5rem;}
+table{width:100%;border-collapse:collapse;}
+th{font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vg-muted);padding:0.75rem 1rem;text-align:left;border-bottom:1px solid var(--vg-border);background:var(--vg-warm);white-space:nowrap;}
+td{padding:0.75rem 1rem;border-bottom:1px solid var(--vg-border);font-size:0.82rem;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--vg-cream);}
+.badge{font-size:0.63rem;letter-spacing:0.07em;text-transform:uppercase;padding:3px 8px;display:inline-flex;align-items:center;gap:3px;}
+.b-actif{background:var(--vg-success-bg);color:var(--vg-success);}
+.b-inactif{background:var(--vg-error-bg);color:var(--vg-error);}
+.b-attente{background:#F1EFE8;color:#5F5E5A;}
+.b-accepte{background:#E6F1FB;color:#185FA5;}
+.b-preparation{background:#FAEEDA;color:#854F0B;}
+.b-livraison{background:#E1F5EE;color:#0F6E56;}
+.b-terminee{background:#1C1810;color:var(--vg-gold-light);}
+.b-annulee{background:var(--vg-error-bg);color:var(--vg-error);}
+.td-actions{display:flex;gap:0.4rem;flex-wrap:wrap;}
+
+/* CHART AREA */
+.chart-section{background:#fff;border:1px solid var(--vg-border);padding:1.5rem;margin-bottom:1.5rem;}
+.chart-section-title{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:1.25rem;}
+.chart-filters{display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center;}
+.chart-select{border:1px solid var(--vg-border);padding:6px 10px;font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--vg-dark);outline:none;background:#fff;}
+.chart-select:focus{border-color:var(--vg-gold);}
+.chart-label{font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--vg-muted);}
+.bar-chart{display:flex;align-items:flex-end;gap:0.75rem;height:180px;padding:0 0.5rem;}
+.bar-group{display:flex;flex-direction:column;align-items:center;gap:0.4rem;flex:1;}
+.bar{width:100%;background:var(--vg-gold);opacity:0.85;transition:all 0.4s;cursor:pointer;position:relative;min-width:20px;}
+.bar:hover{opacity:1;}
+.bar-label{font-size:0.68rem;color:var(--vg-muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px;}
+.bar-val{font-family:'Playfair Display',serif;font-size:0.85rem;color:var(--vg-dark);text-align:center;}
+.bar.highlight{background:var(--vg-dark);}
+
+/* CA section */
+.ca-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+.ca-card{background:#fff;border:1px solid var(--vg-border);padding:1.25rem;}
+.ca-card-title{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.5rem;}
+.ca-value{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--vg-dark);}
+.ca-sub{font-size:0.75rem;color:var(--vg-muted);margin-top:4px;}
+.ca-table td:last-child{font-family:'Playfair Display',serif;font-size:0.95rem;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(20,16,8,0.88);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--vg-cream);width:100%;max-width:460px;padding:2rem;position:relative;max-height:90vh;overflow-y:auto;}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--vg-dark);margin-bottom:0.4rem;}
+.modal-sub{font-size:0.82rem;color:var(--vg-muted);line-height:1.6;margin-bottom:1.25rem;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;color:var(--vg-muted);font-size:20px;}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:0.9rem;}
+.field label{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--vg-muted);}
+.field input,.field select{padding:8px 12px;border:1px solid var(--vg-border);font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--vg-dark);outline:none;background:#fff;}
+.field input:focus,.field select:focus{border-color:var(--vg-gold);}
+.modal-actions{display:flex;gap:0.75rem;margin-top:0.5rem;}
+.btn-cancel{background:none;border:1px solid var(--vg-border);padding:9px 18px;font-family:'DM Sans',sans-serif;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--vg-muted);cursor:pointer;}
+.info-box{background:var(--vg-warm);border:1px solid var(--vg-border);border-left:3px solid var(--vg-gold);padding:0.85rem 1rem;font-size:0.8rem;color:var(--vg-muted);line-height:1.55;margin-bottom:1rem;}
+.info-box strong{color:var(--vg-dark);}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--vg-dark);color:#FAF8F3;padding:0.75rem 1.25rem;font-size:0.82rem;display:flex;align-items:center;gap:8px;z-index:300;transform:translateY(80px);opacity:0;transition:all 0.3s;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast i{color:var(--vg-gold);}
+
+/* PW strength */
+.pw-bars{display:flex;gap:3px;margin-top:5px;}
+.pw-bar{height:3px;flex:1;background:var(--vg-border);transition:background 0.3s;}
+.pw-bar.weak{background:#E24B4A;}
+.pw-bar.medium{background:#EF9F27;}
+.pw-bar.strong{background:#639922;}
+.pw-wrap{position:relative;}
+.pw-wrap input{padding-right:36px;width:100%;}
+.pw-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--vg-muted);font-size:16px;padding:0;}
+</style>
+
+<nav>
+  <div class="nav-logo">Vite &amp; <span>Gourmand</span></div>
+  <div class="nav-right">
+    <span class="nav-badge"><i class="ti ti-shield-check"></i> Administrateur</span>
+    <div class="nav-avatar">JO</div>
+    <span class="nav-name">José</span>
+    <button class="nav-logout"><i class="ti ti-logout"></i> Déconnexion</button>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="side-nav">
+    <div class="side-user">
+      <div class="side-avatar">JO</div>
+      <div class="side-name">José</div>
+      <span class="side-role">Administrateur</span>
+    </div>
+
+    <div class="side-section">Administration</div>
+    <div class="side-link active" onclick="showPage('dashboard')"><i class="ti ti-layout-dashboard"></i> Tableau de bord</div>
+    <div class="side-link" onclick="showPage('employes')"><i class="ti ti-users"></i> Employés</div>
+    <div class="side-link" onclick="showPage('stats')"><i class="ti ti-chart-bar"></i> Statistiques</div>
+    <div class="side-link" onclick="showPage('ca')"><i class="ti ti-currency-euro"></i> Chiffre d'affaires</div>
+
+    <div class="side-section">Gestion (employé)</div>
+    <div class="side-link" onclick="showPage('commandes')"><i class="ti ti-shopping-bag"></i> Commandes<span class="side-notif">3</span></div>
+    <div class="side-link" onclick="showPage('menus')"><i class="ti ti-book"></i> Menus</div>
+    <div class="side-link" onclick="showPage('avis')"><i class="ti ti-star"></i> Avis<span class="side-notif">2</span></div>
+  </aside>
+
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div id="page-dashboard">
+      <div class="page-head">
+        <div class="page-head-left">
+          <p class="page-label">Vue d'ensemble</p>
+          <h1 class="page-title">Tableau de bord</h1>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-num gold">12 480 €</div><div class="stat-label">CA ce mois</div></div>
+        <div class="stat-card"><div class="stat-num">24</div><div class="stat-label">Commandes ce mois</div></div>
+        <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">En attente</div></div>
+        <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Employés actifs</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="chart-section">
+          <div class="chart-section-title">Commandes par menu (NoSQL)</div>
+          <div class="bar-chart" id="dash-chart"></div>
+        </div>
+        <div class="chart-section">
+          <div class="chart-section-title">Dernières commandes</div>
+          <table>
+            <thead><tr><th>Réf.</th><th>Client</th><th>Statut</th><th>Prix</th></tr></thead>
+            <tbody id="last-orders"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMPLOYÉS -->
+    <div id="page-employes" class="page-hidden">
+      <div class="page-head">
+        <div class="page-head-left">
+          <p class="page-label">Gestion des accès</p>
+          <h1 class="page-title">Employés</h1>
+        </div>
+        <button class="btn-primary" onclick="openNewEmploye()"><i class="ti ti-plus"></i> Créer un compte employé</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nom</th><th>Email (username)</th><th>Date création</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody id="emp-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div id="page-stats" class="page-hidden">
+      <div class="page-head">
+        <div class="page-head-left">
+          <p class="page-label">Données NoSQL · MongoDB</p>
+          <h1 class="page-title">Commandes par menu</h1>
+        </div>
+      </div>
+      <div class="chart-section">
+        <div class="chart-filters">
+          <span class="chart-label">Afficher :</span>
+          <select class="chart-select" onchange="renderBarChart('stats-chart',this.value)">
+            <option value="all">Tous les menus</option>
+            <option value="top3">Top 3 seulement</option>
+          </select>
+          <span class="chart-label" style="margin-left:auto;font-size:0.75rem;color:var(--vg-muted);">Source : base NoSQL (MongoDB)</span>
+        </div>
+        <div class="bar-chart" id="stats-chart"></div>
+      </div>
+      <div class="chart-section">
+        <div class="chart-section-title">Comparatif détaillé</div>
+        <table>
+          <thead><tr><th>Menu</th><th>Thème</th><th>Nb commandes</th><th>Part (%)</th></tr></thead>
+          <tbody id="stats-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CA -->
+    <div id="page-ca" class="page-hidden">
+      <div class="page-head">
+        <div class="page-head-left">
+          <p class="page-label">Analyse financière</p>
+          <h1 class="page-title">Chiffre d'affaires</h1>
+        </div>
+      </div>
+      <div class="chart-filters" style="background:#fff;border:1px solid var(--vg-border);padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+        <span class="chart-label">Menu :</span>
+        <select class="chart-select" id="ca-menu-filter" onchange="renderCA()">
+          <option value="all">Tous les menus</option>
+          <option value="1">Menu Festif de Noël</option>
+          <option value="2">Menu Pâques Tradition</option>
+          <option value="3">Formule Classique</option>
+          <option value="4">Banquet Végétarien</option>
+          <option value="5">Menu Vegan Été</option>
+          <option value="6">Gala Prestige</option>
+        </select>
+        <span class="chart-label">Du :</span>
+        <input type="date" class="chart-select" id="ca-date-start" value="2025-01-01" onchange="renderCA()">
+        <span class="chart-label">Au :</span>
+        <input type="date" class="chart-select" id="ca-date-end" value="2025-12-31" onchange="renderCA()">
+      </div>
+      <div class="ca-grid" id="ca-kpis"></div>
+      <div class="chart-section">
+        <div class="chart-section-title">CA mensuel</div>
+        <div class="bar-chart" id="ca-chart"></div>
+      </div>
+      <div class="chart-section">
+        <div class="chart-section-title">Détail par menu</div>
+        <table class="ca-table">
+          <thead><tr><th>Menu</th><th>Nb commandes</th><th>CA total</th><th>CA moyen / cmd</th></tr></thead>
+          <tbody id="ca-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COMMANDES (hérité employé) -->
+    <div id="page-commandes" class="page-hidden">
+      <div class="page-head"><div class="page-head-left"><p class="page-label">Gestion (vue employé)</p><h1 class="page-title">Commandes</h1></div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Réf.</th><th>Client</th><th>Menu</th><th>Date</th><th>Prix</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody id="admin-cmd-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MENUS (hérité employé) -->
+    <div id="page-menus" class="page-hidden">
+      <div class="page-head"><div class="page-head-left"><p class="page-label">Gestion (vue employé)</p><h1 class="page-title">Menus</h1></div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Titre</th><th>Thème</th><th>Régime</th><th>Prix</th><th>Pers. min.</th><th>Stock</th><th>Actions</th></tr></thead>
+          <tbody id="menus-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- AVIS (hérité employé) -->
+    <div id="page-avis" class="page-hidden">
+      <div class="page-head"><div class="page-head-left"><p class="page-label">Modération (vue employé)</p><h1 class="page-title">Avis clients</h1></div></div>
+      <div id="avis-list-admin" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL NOUVEL EMPLOYÉ -->
+<div class="modal-overlay" id="modal-employe">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-employe')"><i class="ti ti-x"></i></button>
+    <div class="modal-title">Créer un compte employé</div>
+    <div class="info-box">
+      <strong>Important :</strong> L'employé recevra un mail de notification indiquant qu'un compte a été créé pour lui. <strong>Le mot de passe ne sera pas communiqué par mail</strong> — il devra se rapprocher de l'administrateur pour l'obtenir.
+    </div>
+    <div class="field"><label>Prénom</label><input type="text" id="emp-prenom" placeholder="Jean-Luc"></div>
+    <div class="field"><label>Nom</label><input type="text" id="emp-nom" placeholder="Martin"></div>
+    <div class="field"><label>Email (username)</label><input type="email" id="emp-email" placeholder="jean-luc.martin@vitegourmand.fr"></div>
+    <div class="field"><label>Mot de passe</label>
+      <div class="pw-wrap">
+        <input type="password" id="emp-pw" placeholder="••••••••••" oninput="checkEmpPw(this)">
+        <button class="pw-eye" onclick="toggleEmpPw(this)" type="button"><i class="ti ti-eye"></i></button>
+      </div>
+      <div class="pw-bars"><div class="pw-bar" id="epb1"></div><div class="pw-bar" id="epb2"></div><div class="pw-bar" id="epb3"></div><div class="pw-bar" id="epb4"></div></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-employe')">Annuler</button>
+      <button class="btn-primary" onclick="createEmploye()"><i class="ti ti-user-plus"></i> Créer le compte</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DÉSACTIVER EMPLOYÉ -->
+<div class="modal-overlay" id="modal-disable">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-disable')"><i class="ti ti-x"></i></button>
+    <div class="modal-title" id="disable-title">Désactiver le compte</div>
+    <p class="modal-sub" id="disable-sub">Le compte sera désactivé et l'employé ne pourra plus se connecter. Cette action est réversible depuis cette interface.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-disable')">Annuler</button>
+      <button class="btn-danger" onclick="doToggleEmp()" style="padding:9px 18px;font-size:0.75rem;"><i class="ti ti-user-off"></i> <span id="disable-btn-label">Désactiver</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL STATUT CMD -->
+<div class="modal-overlay" id="modal-statut">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-statut')"><i class="ti ti-x"></i></button>
+    <div class="modal-title">Mettre à jour le statut</div>
+    <p class="modal-sub">Commande <strong id="ms-ref"></strong></p>
+    <div class="field"><label>Nouveau statut</label>
+      <select id="ms-statut">
+        <option value="accepte">Acceptée</option>
+        <option value="preparation">En préparation</option>
+        <option value="livraison">En cours de livraison</option>
+        <option value="livre">Livrée</option>
+        <option value="materiel">En attente retour matériel</option>
+        <option value="terminee">Terminée</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-statut')">Annuler</button>
+      <button class="btn-primary" onclick="doStatut()"><i class="ti ti-check"></i> Valider</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="ti ti-check"></i><span id="toast-msg"></span></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────
+const EMPLOYES=[
+  {id:1,prenom:'Jean-Luc',nom:'Martin',email:'jl.martin@vitegourmand.fr',created:'12 jan. 2023',actif:true},
+  {id:2,prenom:'Camille',nom:'Roux',email:'c.roux@vitegourmand.fr',created:'03 avr. 2024',actif:true},
+  {id:3,prenom:'Thomas',nom:'Garnier',email:'t.garnier@vitegourmand.fr',created:'18 sep. 2022',actif:false},
+];
+
+const COMMANDES=[
+  {id:'CMD-001',client:'Marie Dupont',menu:'Menu Festif de Noël',menuId:1,date:'2025-12-24',prix:231.50,statut:'attente'},
+  {id:'CMD-002',client:'Pierre Martin',menu:'Formule Classique',menuId:3,date:'2025-06-15',prix:78.00,statut:'preparation'},
+  {id:'CMD-003',client:'Sophie Leroy',menu:'Banquet Végétarien',menuId:4,date:'2025-05-28',prix:72.00,statut:'attente'},
+  {id:'CMD-004',client:'Alain Petit',menu:'Gala Prestige',menuId:6,date:'2025-06-01',prix:360.00,statut:'livraison'},
+  {id:'CMD-005',client:'Claire Dubois',menu:'Menu Pâques',menuId:2,date:'2025-04-20',prix:95.00,statut:'terminee'},
+  {id:'CMD-006',client:'Marc Bouchard',menu:'Menu Vegan Été',menuId:5,date:'2025-07-04',prix:58.00,statut:'attente'},
+];
+
+const MENUS_DATA=[
+  {id:1,titre:'Menu Festif de Noël',theme:'Noël',regime:'Classique',prix:185,persons:8,stock:5},
+  {id:2,titre:'Menu Pâques Tradition',theme:'Pâques',regime:'Classique',prix:95,persons:6,stock:12},
+  {id:3,titre:'Formule Classique Conviviale',theme:'Classique',regime:'Classique',prix:65,persons:10,stock:20},
+  {id:4,titre:'Banquet Végétarien Printemps',theme:'Événement',regime:'Végétarien',prix:72,persons:8,stock:8},
+  {id:5,titre:'Menu Vegan Été',theme:'Classique',regime:'Vegan',prix:58,persons:5,stock:15},
+  {id:6,titre:'Gala Prestige Événementiel',theme:'Événement',regime:'Classique',prix:240,persons:20,stock:3},
+];
+
+// Simulated NoSQL data (MongoDB-style)
+const NOSQL_STATS=[
+  {menuId:1,titre:'Menu Noël',commandes:42,ca:9702},
+  {menuId:6,titre:'Gala Prestige',commandes:28,ca:10080},
+  {menuId:3,titre:'Formule Classique',commandes:35,ca:2275},
+  {menuId:2,titre:'Menu Pâques',commandes:19,ca:1805},
+  {menuId:4,titre:'Banquet Végétarien',commandes:14,ca:1008},
+  {menuId:5,titre:'Menu Vegan Été',commandes:11,ca:638},
+];
+
+const CA_MENSUEL=[
+  {mois:'Jan',ca:980},{mois:'Fév',ca:1240},{mois:'Mar',ca:1680},
+  {mois:'Avr',ca:2100},{mois:'Mai',ca:1850},{mois:'Jun',ca:2400},
+  {mois:'Jul',ca:1600},{mois:'Aoû',ca:900},{mois:'Sep',ca:1980},
+  {mois:'Oct',ca:2200},{mois:'Nov',ca:2580},{mois:'Déc',ca:3840},
+];
+
+const AVIS_DATA=[
+  {id:1,client:'Marie L.',menu:'Menu Festif de Noël',note:5,texte:'Repas exceptionnel, tout était parfait.',statut:'pending'},
+  {id:2,client:'Paul T.',menu:'Gala Prestige',note:4,texte:'Très bonne prestation, légèrement en retard.',statut:'pending'},
+  {id:3,client:'Isabelle R.',menu:'Formule Classique',note:5,texte:'On reviendra sans hésiter !',statut:'valide'},
+];
+
+let pendingCmdId=null, pendingEmpId=null;
+
+// ── BADGE ──────────────────────────────────────────────
+function statutBadge(s){
+  const map={attente:['b-attente','En attente'],accepte:['b-accepte','Acceptée'],preparation:['b-preparation','En préparation'],livraison:['b-livraison','En livraison'],livre:['b-livraison','Livrée'],materiel:['b-preparation','Retour matériel'],terminee:['b-terminee','Terminée'],annulee:['b-annulee','Annulée']};
+  const [cls,label]=map[s]||map.attente;
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+
+// ── DASHBOARD ──────────────────────────────────────────
+function renderDashChart(){
+  const data=NOSQL_STATS.slice(0,5);
+  const max=Math.max(...data.map(d=>d.commandes));
+  document.getElementById('dash-chart').innerHTML=data.map((d,i)=>`
+    <div class="bar-group">
+      <div class="bar-val">${d.commandes}</div>
+      <div class="bar${i===0?' highlight':''}" style="height:${Math.round(d.commandes/max*140)}px;" title="${d.commandes} commandes"></div>
+      <div class="bar-label">${d.titre.split(' ').slice(0,2).join(' ')}</div>
+    </div>
+  `).join('');
+}
+function renderLastOrders(){
+  document.getElementById('last-orders').innerHTML=COMMANDES.slice(0,5).map(c=>`
+    <tr>
+      <td style="font-size:0.72rem;color:var(--vg-muted);">${c.id}</td>
+      <td style="font-size:0.82rem;">${c.client}</td>
+      <td>${statutBadge(c.statut)}</td>
+      <td style="font-family:'Playfair Display',serif;font-size:0.9rem;">${c.prix.toFixed(2)} €</td>
+    </tr>
+  `).join('');
+}
+
+// ── EMPLOYÉS ──────────────────────────────────────────
+function renderEmployes(){
+  document.getElementById('emp-tbody').innerHTML=EMPLOYES.map(e=>`
+    <tr>
+      <td style="font-weight:500;">${e.prenom} ${e.nom}</td>
+      <td style="color:var(--vg-muted);font-size:0.8rem;">${e.email}</td>
+      <td style="color:var(--vg-muted);font-size:0.78rem;">${e.created}</td>
+      <td><span class="badge ${e.actif?'b-actif':'b-inactif'}">${e.actif?'Actif':'Désactivé'}</span></td>
+      <td>
+        <div class="td-actions">
+          ${e.actif
+            ?`<button class="btn-danger" onclick="openDisable(${e.id},true)"><i class="ti ti-user-off"></i> Désactiver</button>`
+            :`<button class="btn-success" onclick="openDisable(${e.id},false)"><i class="ti ti-user-check"></i> Réactiver</button>`
+          }
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+function openNewEmploye(){document.getElementById('modal-employe').classList.add('open');}
+function openDisable(id,isActive){
+  pendingEmpId=id;
+  const e=EMPLOYES.find(x=>x.id===id);
+  document.getElementById('disable-title').textContent=isActive?`Désactiver le compte de ${e.prenom}`:`Réactiver le compte de ${e.prenom}`;
+  document.getElementById('disable-sub').textContent=isActive
+    ?`Le compte de ${e.prenom} ${e.nom} sera désactivé. Il ne pourra plus se connecter à l'application.`
+    :`Le compte de ${e.prenom} ${e.nom} sera réactivé. Il pourra à nouveau se connecter.`;
+  document.getElementById('disable-btn-label').textContent=isActive?'Désactiver':'Réactiver';
+  document.getElementById('modal-disable').classList.add('open');
+}
+function doToggleEmp(){
+  const e=EMPLOYES.find(x=>x.id===pendingEmpId);
+  if(e)e.actif=!e.actif;
+  closeModal('modal-disable');
+  renderEmployes();
+  showToast(e.actif?'Compte réactivé avec succès':'Compte désactivé avec succès');
+}
+function createEmploye(){
+  const prenom=document.getElementById('emp-prenom').value;
+  const nom=document.getElementById('emp-nom').value;
+  const email=document.getElementById('emp-email').value;
+  if(!prenom||!nom||!email){alert('Veuillez remplir tous les champs.');return;}
+  EMPLOYES.push({id:Date.now(),prenom,nom,email,created:'Aujourd\'hui',actif:true});
+  closeModal('modal-employe');
+  renderEmployes();
+  showToast(`Compte créé pour ${prenom} — mail de notification envoyé`);
+}
+function checkEmpPw(inp){
+  const v=inp.value;
+  const bars=[1,2,3,4].map(i=>document.getElementById('epb'+i));
+  let score=0;
+  if(v.length>=10)score++;if(/[A-Z]/.test(v))score++;if(/[0-9]/.test(v))score++;if(/[^A-Za-z0-9]/.test(v))score++;
+  bars.forEach((b,i)=>{b.className='pw-bar';if(i<score)b.classList.add(score<=1?'weak':score<=2?'medium':'strong');});
+}
+function toggleEmpPw(btn){
+  const inp=document.getElementById('emp-pw');
+  const show=inp.type==='text';
+  inp.type=show?'password':'text';
+  btn.querySelector('i').className=show?'ti ti-eye':'ti ti-eye-off';
+}
+
+// ── STATS NoSQL ────────────────────────────────────────
+function renderBarChart(targetId, filter='all'){
+  let data=filter==='top3'?NOSQL_STATS.slice(0,3):NOSQL_STATS;
+  const max=Math.max(...data.map(d=>d.commandes));
+  document.getElementById(targetId).innerHTML=data.map((d,i)=>`
+    <div class="bar-group">
+      <div class="bar-val">${d.commandes}</div>
+      <div class="bar${i===0?' highlight':''}" style="height:${Math.round(d.commandes/max*150)}px;" title="${d.commandes} commandes"></div>
+      <div class="bar-label">${d.titre}</div>
+    </div>
+  `).join('');
+}
+function renderStatsTable(){
+  const total=NOSQL_STATS.reduce((a,b)=>a+b.commandes,0);
+  document.getElementById('stats-table').innerHTML=NOSQL_STATS.map((d,i)=>`
+    <tr>
+      <td style="font-weight:${i===0?'500':'400'}">${d.titre}</td>
+      <td>${MENUS_DATA.find(m=>m.id===d.menuId)?.theme||'—'}</td>
+      <td style="font-family:'Playfair Display',serif;font-size:1rem;">${d.commandes}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <div style="flex:1;height:6px;background:var(--vg-border);"><div style="width:${Math.round(d.commandes/total*100)}%;height:100%;background:var(--vg-gold);"></div></div>
+          <span style="font-size:0.78rem;color:var(--vg-muted);min-width:36px;">${Math.round(d.commandes/total*100)} %</span>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// ── CA ─────────────────────────────────────────────────
+function renderCA(){
+  const menuFilter=document.getElementById('ca-menu-filter').value;
+  let data=menuFilter==='all'?NOSQL_STATS:NOSQL_STATS.filter(d=>d.menuId===parseInt(menuFilter));
+  const totalCA=data.reduce((a,b)=>a+b.ca,0);
+  const totalCmds=data.reduce((a,b)=>a+b.commandes,0);
+  document.getElementById('ca-kpis').innerHTML=`
+    <div class="ca-card"><div class="ca-card-title">CA total période</div><div class="ca-value">${totalCA.toLocaleString('fr-FR')} €</div><div class="ca-sub">${totalCmds} commandes sur la période</div></div>
+    <div class="ca-card"><div class="ca-card-title">Panier moyen</div><div class="ca-value">${totalCmds?Math.round(totalCA/totalCmds).toLocaleString('fr-FR')+' €':'—'}</div><div class="ca-sub">par commande</div></div>
+  `;
+  // Monthly chart
+  const maxCA=Math.max(...CA_MENSUEL.map(m=>m.ca));
+  document.getElementById('ca-chart').innerHTML=CA_MENSUEL.map(m=>`
+    <div class="bar-group">
+      <div class="bar-val" style="font-size:0.72rem;">${m.ca}€</div>
+      <div class="bar" style="height:${Math.round(m.ca/maxCA*140)}px;background:${m.ca===maxCA?'var(--vg-dark)':'var(--vg-gold)'};"></div>
+      <div class="bar-label">${m.mois}</div>
+    </div>
+  `).join('');
+  // Detail table
+  document.getElementById('ca-table-body').innerHTML=data.map(d=>`
+    <tr>
+      <td style="font-weight:500;">${d.titre}</td>
+      <td>${d.commandes}</td>
+      <td>${d.ca.toLocaleString('fr-FR')} €</td>
+      <td>${Math.round(d.ca/d.commandes)} €</td>
+    </tr>
+  `).join('');
+}
+
+// ── COMMANDES (admin view) ─────────────────────────────
+function renderAdminCommandes(){
+  document.getElementById('admin-cmd-tbody').innerHTML=COMMANDES.map(c=>`
+    <tr>
+      <td style="font-size:0.72rem;color:var(--vg-muted);">${c.id}</td>
+      <td style="font-weight:500;">${c.client}</td>
+      <td style="max-width:140px;">${c.menu}</td>
+      <td style="color:var(--vg-muted);font-size:0.78rem;">${c.date}</td>
+      <td style="font-family:'Playfair Display',serif;">${c.prix.toFixed(2)} €</td>
+      <td>${statutBadge(c.statut)}</td>
+      <td><div class="td-actions">
+        ${c.statut!=='terminee'&&c.statut!=='annulee'?`<button class="btn-warning" onclick="openStatut('${c.id}')"><i class="ti ti-refresh"></i> Statut</button>`:''}
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+// ── MENUS (admin view) ─────────────────────────────────
+function renderAdminMenus(){
+  document.getElementById('menus-tbody').innerHTML=MENUS_DATA.map(m=>`
+    <tr>
+      <td style="font-weight:500;">${m.titre}</td>
+      <td>${m.theme}</td>
+      <td>${m.regime}</td>
+      <td style="font-family:'Playfair Display',serif;">${m.prix} €</td>
+      <td>${m.persons}</td>
+      <td><span style="color:${m.stock<=5?'var(--vg-error)':'var(--vg-success)'};">${m.stock}</span></td>
+      <td><div class="td-actions">
+        <button class="btn-warning"><i class="ti ti-edit"></i> Modifier</button>
+        <button class="btn-danger"><i class="ti ti-trash"></i> Supprimer</button>
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+// ── AVIS (admin view) ──────────────────────────────────
+function renderAdminAvis(){
+  document.getElementById('avis-list-admin').innerHTML=AVIS_DATA.map(a=>`
+    <div style="background:#fff;border:1px solid var(--vg-border);border-left:${a.statut==='pending'?'3px solid var(--vg-gold)':'1px solid var(--vg-border)'};padding:1.1rem;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem;">
+        <div>
+          <div style="color:var(--vg-gold);margin-bottom:3px;">${'★'.repeat(a.note)}${'☆'.repeat(5-a.note)}</div>
+          <div style="font-size:0.82rem;font-weight:500;">${a.client} · <span style="color:var(--vg-muted);font-weight:400;">${a.menu}</span></div>
+        </div>
+        <span class="badge ${a.statut==='valide'?'b-actif':'b-attente'}">${a.statut==='valide'?'Validé':'En attente'}</span>
+      </div>
+      <p style="font-size:0.83rem;color:var(--vg-muted);font-style:italic;margin-bottom:0.75rem;">"${a.texte}"</p>
+      ${a.statut==='pending'?`
+        <div style="display:flex;gap:0.5rem;">
+          <button class="btn-success" onclick="validerAvis(${a.id})"><i class="ti ti-check"></i> Valider</button>
+          <button class="btn-danger" onclick="refuserAvis(${a.id})"><i class="ti ti-x"></i> Refuser</button>
+        </div>`:''}
+    </div>
+  `).join('');
+}
+function validerAvis(id){const a=AVIS_DATA.find(x=>x.id===id);if(a)a.statut='valide';renderAdminAvis();showToast('Avis validé — visible sur la page d\'accueil');}
+function refuserAvis(id){const i=AVIS_DATA.findIndex(x=>x.id===id);if(i>-1)AVIS_DATA.splice(i,1);renderAdminAvis();showToast('Avis refusé');}
+
+// ── STATUT CMD ─────────────────────────────────────────
+function openStatut(id){
+  pendingCmdId=id;
+  document.getElementById('ms-ref').textContent=id;
+  document.getElementById('modal-statut').classList.add('open');
+}
+function doStatut(){
+  const c=COMMANDES.find(x=>x.id===pendingCmdId);
+  if(c){c.statut=document.getElementById('ms-statut').value;}
+  closeModal('modal-statut');renderAdminCommandes();renderLastOrders();
+  showToast('Statut mis à jour');
+}
+
+// ── NAVIGATION ─────────────────────────────────────────
+function showPage(p){
+  ['dashboard','employes','stats','ca','commandes','menus','avis'].forEach(pg=>{
+    document.getElementById('page-'+pg).classList.toggle('page-hidden',pg!==p);
+  });
+  document.querySelectorAll('.side-link').forEach(el=>{
+    const target=el.getAttribute('onclick')?.match(/'(\w+)'/)?.[1];
+    el.classList.toggle('active',target===p);
+  });
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ── INIT ────────────────────────────────────────────────
+renderDashChart();
+renderLastOrders();
+renderEmployes();
+renderBarChart('stats-chart');
+renderStatsTable();
+renderCA();
+renderAdminCommandes();
+renderAdminMenus();
+renderAdminAvis();
+</script>

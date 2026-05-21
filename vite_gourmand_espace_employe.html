@@ -1,0 +1,594 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --vg-cream:#FAF8F3;--vg-dark:#1C1810;--vg-gold:#B8860B;--vg-gold-light:#D4A520;
+  --vg-warm:#F5EFE0;--vg-muted:#7A6E5A;--vg-border:#E8DFC8;
+  --vg-error:#A32D2D;--vg-error-bg:#FCEBEB;
+  --vg-success:#3B6D11;--vg-success-bg:#EAF3DE;
+}
+body{font-family:'DM Sans',sans-serif;background:#F0EDE6;color:var(--vg-dark);}
+
+nav{background:var(--vg-dark);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:60px;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Playfair Display',serif;color:#FAF8F3;font-size:1.15rem;}
+.nav-logo span{color:var(--vg-gold-light);}
+.nav-right{display:flex;align-items:center;gap:1rem;}
+.nav-user{font-size:0.8rem;color:#C8BFA8;display:flex;align-items:center;gap:8px;}
+.nav-avatar{width:30px;height:30px;border-radius:50%;background:var(--vg-gold);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:600;color:var(--vg-dark);}
+.nav-badge{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;background:#2D4A2D;color:#C0DD97;padding:2px 8px;}
+.nav-logout{color:#4A4035;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;background:none;border:none;cursor:pointer;}
+
+.layout{display:grid;grid-template-columns:200px 1fr;min-height:calc(100vh - 60px);}
+
+/* SIDEBAR */
+.side-nav{background:var(--vg-dark);padding:1.5rem 0;border-right:1px solid #2A2218;}
+.side-user{padding:0 1.25rem 1.25rem;border-bottom:1px solid #2A2218;margin-bottom:0.75rem;}
+.side-avatar{width:44px;height:44px;border-radius:50%;background:var(--vg-gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--vg-dark);margin-bottom:0.6rem;}
+.side-name{font-family:'Playfair Display',serif;font-size:0.95rem;color:#FAF8F3;margin-bottom:4px;}
+.side-role{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#C0DD97;background:#2D4A2D;padding:2px 8px;display:inline-block;}
+.side-link{display:flex;align-items:center;gap:10px;padding:0.6rem 1.25rem;font-size:0.8rem;color:#6B6050;cursor:pointer;transition:all 0.15s;border-left:2px solid transparent;position:relative;}
+.side-link i{font-size:15px;}
+.side-link:hover{color:#C8BFA8;background:#1A140C;}
+.side-link.active{color:#FAF8F3;border-left-color:var(--vg-gold);background:#1A140C;}
+.side-notif{position:absolute;right:1rem;background:var(--vg-error);color:#fff;font-size:0.6rem;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;}
+
+/* MAIN */
+.main{padding:2rem;overflow:auto;}
+.page-hidden{display:none;}
+.page-head{margin-bottom:1.75rem;}
+.page-label{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.3rem;}
+.page-title{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--vg-dark);}
+
+/* STAT ROW */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:1.75rem;}
+.stat-card{background:#fff;border:1px solid var(--vg-border);padding:1rem;}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--vg-dark);}
+.stat-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--vg-muted);margin-top:3px;}
+.stat-card.urgent .stat-num{color:var(--vg-error);}
+
+/* FILTERS BAR */
+.filters-bar{background:#fff;border:1px solid var(--vg-border);padding:0.9rem 1.25rem;display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;margin-bottom:1.25rem;}
+.filter-label{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--vg-muted);margin-right:0.25rem;}
+.filter-pill{padding:5px 12px;border:1px solid var(--vg-border);background:var(--vg-cream);font-size:0.75rem;cursor:pointer;color:var(--vg-muted);transition:all 0.15s;}
+.filter-pill:hover{border-color:var(--vg-gold);}
+.filter-pill.active{background:var(--vg-dark);color:#FAF8F3;border-color:var(--vg-dark);}
+.search-input{border:1px solid var(--vg-border);padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--vg-dark);outline:none;width:180px;margin-left:auto;}
+.search-input:focus{border-color:var(--vg-gold);}
+
+/* TABLE */
+.table-wrap{background:#fff;border:1px solid var(--vg-border);overflow:auto;}
+table{width:100%;border-collapse:collapse;}
+th{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vg-muted);padding:0.75rem 1rem;text-align:left;border-bottom:1px solid var(--vg-border);background:var(--vg-warm);white-space:nowrap;}
+td{padding:0.75rem 1rem;border-bottom:1px solid var(--vg-border);font-size:0.83rem;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--vg-cream);}
+.td-menu{font-weight:500;color:var(--vg-dark);max-width:160px;}
+.td-client{color:var(--vg-dark);}
+.td-date{color:var(--vg-muted);white-space:nowrap;}
+.td-prix{font-family:'Playfair Display',serif;font-size:0.95rem;}
+.td-actions{display:flex;gap:0.4rem;flex-wrap:wrap;}
+
+/* STATUS BADGES */
+.badge{font-size:0.64rem;letter-spacing:0.07em;text-transform:uppercase;padding:3px 8px;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;}
+.b-attente{background:#F1EFE8;color:#5F5E5A;}
+.b-accepte{background:#E6F1FB;color:#185FA5;}
+.b-preparation{background:#FAEEDA;color:#854F0B;}
+.b-livraison{background:#E1F5EE;color:#0F6E56;}
+.b-livre{background:#EAF3DE;color:#3B6D11;}
+.b-materiel{background:#FBEAF0;color:#993556;}
+.b-terminee{background:#1C1810;color:var(--vg-gold-light);}
+.b-annulee{background:var(--vg-error-bg);color:var(--vg-error);}
+
+/* BTNS */
+.btn-xs{padding:5px 10px;font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;border:1px solid var(--vg-border);background:#fff;color:var(--vg-muted);transition:all 0.15s;white-space:nowrap;}
+.btn-xs:hover{border-color:var(--vg-dark);color:var(--vg-dark);}
+.btn-xs.primary{background:var(--vg-dark);color:#FAF8F3;border-color:var(--vg-dark);}
+.btn-xs.gold{background:var(--vg-gold);color:var(--vg-dark);border-color:var(--vg-gold);}
+.btn-xs.danger{border-color:#F7C1C1;color:var(--vg-error);background:var(--vg-error-bg);}
+.btn-xs.success{background:var(--vg-success-bg);color:var(--vg-success);border-color:#C0DD97;}
+.btn-sm{padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;border:1px solid var(--vg-border);background:#fff;color:var(--vg-muted);}
+.btn-sm.primary{background:var(--vg-dark);color:#FAF8F3;border-color:var(--vg-dark);}
+.btn-sm.danger{border-color:#F7C1C1;color:var(--vg-error);background:var(--vg-error-bg);}
+.btn-save{background:var(--vg-dark);color:#FAF8F3;padding:9px 20px;font-family:'DM Sans',sans-serif;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;}
+
+/* MENUS / PLATS EDITOR */
+.items-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}
+.item-card{background:#fff;border:1px solid var(--vg-border);padding:1.1rem;}
+.item-card:hover{border-color:var(--vg-gold);}
+.item-name{font-family:'Playfair Display',serif;font-size:1rem;color:var(--vg-dark);margin-bottom:4px;}
+.item-meta{font-size:0.75rem;color:var(--vg-muted);margin-bottom:0.75rem;}
+.item-actions{display:flex;gap:0.5rem;}
+.add-btn{display:flex;align-items:center;gap:8px;background:var(--vg-warm);border:1px dashed var(--vg-border);padding:0.9rem 1.1rem;cursor:pointer;color:var(--vg-muted);font-size:0.82rem;transition:all 0.2s;}
+.add-btn:hover{border-color:var(--vg-gold);color:var(--vg-dark);}
+
+/* AVIS */
+.avis-list{display:flex;flex-direction:column;gap:0.75rem;}
+.avis-card{background:#fff;border:1px solid var(--vg-border);padding:1.1rem;}
+.avis-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.6rem;}
+.avis-stars{color:var(--vg-gold);font-size:14px;margin-bottom:4px;}
+.avis-author{font-size:0.78rem;font-weight:500;color:var(--vg-dark);}
+.avis-menu{font-size:0.72rem;color:var(--vg-muted);}
+.avis-text{font-size:0.83rem;color:var(--vg-muted);font-style:italic;line-height:1.6;margin-bottom:0.75rem;}
+.avis-actions{display:flex;gap:0.5rem;}
+.avis-pending{background:#FAEEDA;border-left:3px solid var(--vg-gold);}
+.pending-tag{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;background:#FAEEDA;color:#854F0B;padding:2px 8px;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(20,16,8,0.88);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--vg-cream);width:100%;max-width:480px;padding:2rem;position:relative;max-height:90vh;overflow-y:auto;}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--vg-dark);margin-bottom:0.4rem;}
+.modal-sub{font-size:0.82rem;color:var(--vg-muted);line-height:1.6;margin-bottom:1.25rem;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;color:var(--vg-muted);font-size:20px;}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:0.9rem;}
+.field label{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--vg-muted);}
+.field input,.field select,.field textarea{padding:8px 12px;border:1px solid var(--vg-border);font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--vg-dark);outline:none;background:#fff;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--vg-gold);}
+.field textarea{resize:vertical;min-height:70px;}
+.modal-actions{display:flex;gap:0.75rem;margin-top:0.5rem;}
+.btn-cancel{background:none;border:1px solid var(--vg-border);padding:9px 18px;font-family:'DM Sans',sans-serif;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--vg-muted);cursor:pointer;}
+
+/* HORAIRES */
+.horaires-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;max-width:520px;}
+.horaire-row{background:#fff;border:1px solid var(--vg-border);padding:0.9rem 1rem;display:flex;align-items:center;gap:1rem;}
+.horaire-day{font-size:0.8rem;font-weight:500;color:var(--vg-dark);min-width:90px;}
+.horaire-inputs{display:flex;align-items:center;gap:0.5rem;flex:1;}
+.horaire-inputs input{border:1px solid var(--vg-border);padding:5px 8px;font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--vg-dark);width:80px;outline:none;}
+.horaire-inputs input:focus{border-color:var(--vg-gold);}
+.horaire-sep{font-size:0.75rem;color:var(--vg-muted);}
+.fermé-toggle{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--vg-muted);cursor:pointer;margin-left:auto;}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--vg-dark);color:#FAF8F3;padding:0.75rem 1.25rem;font-size:0.82rem;display:flex;align-items:center;gap:8px;z-index:300;transform:translateY(80px);opacity:0;transition:all 0.3s;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast i{color:var(--vg-gold);}
+</style>
+
+<nav>
+  <div class="nav-logo">Vite &amp; <span>Gourmand</span></div>
+  <div class="nav-right">
+    <span class="nav-badge"><i class="ti ti-briefcase"></i> Espace employé</span>
+    <div class="nav-user"><div class="nav-avatar">JL</div> Jean-Luc</div>
+    <button class="nav-logout"><i class="ti ti-logout"></i> Déconnexion</button>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="side-nav">
+    <div class="side-user">
+      <div class="side-avatar">JL</div>
+      <div class="side-name">Jean-Luc</div>
+      <span class="side-role">Employé</span>
+    </div>
+    <div class="side-link active" onclick="showPage('commandes')"><i class="ti ti-shopping-bag"></i> Commandes<span class="side-notif" id="notif-cmd">3</span></div>
+    <div class="side-link" onclick="showPage('menus')"><i class="ti ti-book"></i> Menus</div>
+    <div class="side-link" onclick="showPage('plats')"><i class="ti ti-tools-kitchen-2"></i> Plats</div>
+    <div class="side-link" onclick="showPage('avis')"><i class="ti ti-star"></i> Avis<span class="side-notif" id="notif-avis">2</span></div>
+    <div class="side-link" onclick="showPage('horaires')"><i class="ti ti-clock"></i> Horaires</div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ===== COMMANDES ===== -->
+    <div id="page-commandes">
+      <div class="page-head">
+        <p class="page-label">Gestion des commandes</p>
+        <h1 class="page-title">Commandes</h1>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card urgent"><div class="stat-num" id="stat-attente">0</div><div class="stat-label">En attente</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-preparation">0</div><div class="stat-label">En préparation</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-livraison">0</div><div class="stat-label">En livraison</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-terminee">0</div><div class="stat-label">Terminées</div></div>
+      </div>
+      <div class="filters-bar">
+        <span class="filter-label">Statut :</span>
+        <button class="filter-pill active" onclick="filterCmd('tous',this)">Tous</button>
+        <button class="filter-pill" onclick="filterCmd('attente',this)">En attente</button>
+        <button class="filter-pill" onclick="filterCmd('accepte',this)">Acceptée</button>
+        <button class="filter-pill" onclick="filterCmd('preparation',this)">Préparation</button>
+        <button class="filter-pill" onclick="filterCmd('livraison',this)">Livraison</button>
+        <button class="filter-pill" onclick="filterCmd('terminee',this)">Terminée</button>
+        <input type="text" class="search-input" placeholder="🔍 Rechercher un client…" oninput="searchCmd(this.value)">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Réf.</th><th>Client</th><th>Menu</th><th>Date prestation</th><th>Personnes</th><th>Prix</th><th>Statut</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="cmd-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== MENUS ===== -->
+    <div id="page-menus" class="page-hidden">
+      <div class="page-head">
+        <p class="page-label">Gestion du catalogue</p>
+        <h1 class="page-title">Menus</h1>
+      </div>
+      <div class="items-grid" id="menus-grid"></div>
+    </div>
+
+    <!-- ===== PLATS ===== -->
+    <div id="page-plats" class="page-hidden">
+      <div class="page-head">
+        <p class="page-label">Gestion du catalogue</p>
+        <h1 class="page-title">Plats</h1>
+      </div>
+      <div class="items-grid" id="plats-grid"></div>
+    </div>
+
+    <!-- ===== AVIS ===== -->
+    <div id="page-avis" class="page-hidden">
+      <div class="page-head">
+        <p class="page-label">Modération</p>
+        <h1 class="page-title">Avis clients</h1>
+      </div>
+      <div class="avis-list" id="avis-list"></div>
+    </div>
+
+    <!-- ===== HORAIRES ===== -->
+    <div id="page-horaires" class="page-hidden">
+      <div class="page-head">
+        <p class="page-label">Configuration</p>
+        <h1 class="page-title">Horaires d'ouverture</h1>
+      </div>
+      <div class="horaires-grid" id="horaires-grid"></div>
+      <div style="margin-top:1.25rem;">
+        <button class="btn-save" onclick="saveHoraires()"><i class="ti ti-check"></i> Enregistrer les horaires</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL STATUT -->
+<div class="modal-overlay" id="modal-statut">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-statut')"><i class="ti ti-x"></i></button>
+    <div class="modal-title">Mettre à jour le statut</div>
+    <p class="modal-sub">Commande <strong id="ms-ref"></strong> — <strong id="ms-menu"></strong></p>
+    <div class="field"><label>Nouveau statut</label>
+      <select id="ms-statut">
+        <option value="accepte">Acceptée</option>
+        <option value="preparation">En préparation</option>
+        <option value="livraison">En cours de livraison</option>
+        <option value="livre">Livrée</option>
+        <option value="materiel">En attente retour matériel</option>
+        <option value="terminee">Terminée</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-statut')">Annuler</button>
+      <button class="btn-save" onclick="doStatut()"><i class="ti ti-check"></i> Valider</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ANNULATION EMPLOYÉ -->
+<div class="modal-overlay" id="modal-annul">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-annul')"><i class="ti ti-x"></i></button>
+    <div class="modal-title">Annuler une commande</div>
+    <p class="modal-sub">L'annulation nécessite d'avoir contacté le client au préalable. Renseignez le mode de contact et le motif.</p>
+    <div class="field"><label>Mode de contact</label>
+      <select id="ann-contact">
+        <option value="">Sélectionner…</option>
+        <option value="gsm">Appel téléphonique (GSM)</option>
+        <option value="mail">Mail</option>
+      </select>
+    </div>
+    <div class="field"><label>Motif d'annulation</label>
+      <textarea id="ann-motif" placeholder="Ex : Stock épuisé pour la date demandée, indisponibilité de l'équipe…"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-annul')">Retour</button>
+      <button class="btn-save" style="background:var(--vg-error);border:none;padding:9px 20px;font-family:'DM Sans',sans-serif;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:#fff;cursor:pointer;" onclick="doAnnul()">Confirmer l'annulation</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL MENU EDIT -->
+<div class="modal-overlay" id="modal-menu">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-menu')"><i class="ti ti-x"></i></button>
+    <div class="modal-title" id="modal-menu-title">Modifier le menu</div>
+    <div class="field"><label>Titre du menu</label><input type="text" id="me-titre" placeholder="Ex : Menu Festif de Noël"></div>
+    <div class="field"><label>Thème</label>
+      <select id="me-theme">
+        <option>Noël</option><option>Pâques</option><option>Classique</option><option>Événement</option>
+      </select>
+    </div>
+    <div class="field"><label>Régime</label>
+      <select id="me-regime"><option>Classique</option><option>Végétarien</option><option>Vegan</option></select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+      <div class="field"><label>Personnes minimum</label><input type="number" id="me-persons" min="1" value="8"></div>
+      <div class="field"><label>Prix (€)</label><input type="number" id="me-prix" min="1" value="120"></div>
+      <div class="field"><label>Stock disponible</label><input type="number" id="me-stock" min="0" value="10"></div>
+    </div>
+    <div class="field"><label>Description</label><textarea id="me-desc" placeholder="Présentation du menu…"></textarea></div>
+    <div class="field"><label>Conditions</label><textarea id="me-cond" placeholder="Délai de commande, conservation…"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-menu')">Annuler</button>
+      <button class="btn-save" onclick="saveMenu()"><i class="ti ti-check"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PLAT EDIT -->
+<div class="modal-overlay" id="modal-plat">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-plat')"><i class="ti ti-x"></i></button>
+    <div class="modal-title" id="modal-plat-title">Modifier le plat</div>
+    <div class="field"><label>Nom du plat</label><input type="text" id="pl-nom" placeholder="Ex : Foie gras maison"></div>
+    <div class="field"><label>Type</label>
+      <select id="pl-type"><option>Entrée</option><option>Plat</option><option>Dessert</option><option>Amuse-bouche</option><option>Accompagnement</option><option>Fromage</option></select>
+    </div>
+    <div class="field"><label>Allergènes (séparés par des virgules)</label><input type="text" id="pl-allergens" placeholder="Gluten, Lait, Œufs…"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-plat')">Annuler</button>
+      <button class="btn-save" onclick="savePlat()"><i class="ti ti-check"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="ti ti-check"></i> <span id="toast-msg"></span></div>
+
+<script>
+const COMMANDES=[
+  {id:'CMD-001',client:'Marie Dupont',email:'marie@mail.fr',menu:'Menu Festif de Noël',date:'2025-12-24',heure:'19:00',persons:10,prix:'231.50 €',statut:'attente'},
+  {id:'CMD-002',client:'Pierre Martin',email:'pierre@mail.fr',menu:'Formule Classique',date:'2025-06-15',heure:'12:30',persons:12,prix:'78.00 €',statut:'preparation'},
+  {id:'CMD-003',client:'Sophie Leroy',email:'sophie@mail.fr',menu:'Banquet Végétarien',date:'2025-05-28',heure:'13:00',persons:8,prix:'72.00 €',statut:'attente'},
+  {id:'CMD-004',client:'Alain Petit',email:'alain@mail.fr',menu:'Gala Prestige',date:'2025-06-01',heure:'20:00',persons:25,prix:'360.00 €',statut:'livraison'},
+  {id:'CMD-005',client:'Claire Dubois',email:'claire@mail.fr',menu:'Menu Pâques',date:'2025-04-20',heure:'12:00',persons:6,prix:'95.00 €',statut:'terminee'},
+  {id:'CMD-006',client:'Marc Bouchard',email:'marc@mail.fr',menu:'Menu Vegan Été',date:'2025-07-04',heure:'19:30',persons:8,prix:'58.00 €',statut:'attente'},
+];
+
+const MENUS_DATA=[
+  {id:1,titre:'Menu Festif de Noël',theme:'Noël',regime:'Classique',prix:185,persons:8,stock:5},
+  {id:2,titre:'Menu Pâques Tradition',theme:'Pâques',regime:'Classique',prix:95,persons:6,stock:12},
+  {id:3,titre:'Formule Classique Conviviale',theme:'Classique',regime:'Classique',prix:65,persons:10,stock:20},
+  {id:4,titre:'Banquet Végétarien Printemps',theme:'Événement',regime:'Végétarien',prix:72,persons:8,stock:8},
+  {id:5,titre:'Menu Vegan Été',theme:'Classique',regime:'Vegan',prix:58,persons:5,stock:15},
+  {id:6,titre:'Gala Prestige Événementiel',theme:'Événement',regime:'Classique',prix:240,persons:20,stock:3},
+];
+
+const PLATS_DATA=[
+  {id:1,nom:'Foie gras maison & toast brioche',type:'Entrée',allergens:'Gluten, Lait'},
+  {id:2,nom:'Velouté de châtaignes',type:'Entrée',allergens:'Lait'},
+  {id:3,nom:'Chapon rôti aux marrons',type:'Plat',allergens:'Céleri'},
+  {id:4,nom:'Magret de canard & gratin',type:'Plat',allergens:'Lait'},
+  {id:5,nom:'Bûche glacée signature',type:'Dessert',allergens:'Lait, Œufs, Gluten'},
+  {id:6,nom:'Tartare de légumes & herbes',type:'Entrée',allergens:'Aucun'},
+];
+
+const AVIS_DATA=[
+  {id:1,client:'Marie L.',menu:'Menu Festif de Noël',note:5,texte:'Repas exceptionnel, tout était parfait. Livraison à l\'heure et présentation soignée.',statut:'pending'},
+  {id:2,client:'Paul T.',menu:'Gala Prestige',note:4,texte:'Très bonne prestation, légèrement en retard mais qualité irréprochable.',statut:'pending'},
+  {id:3,client:'Isabelle R.',menu:'Formule Classique',note:5,texte:'On reviendra sans hésiter. Merci à toute l\'équipe !',statut:'valide'},
+];
+
+const HORAIRES=[
+  {jour:'Lundi',open:'09:00',close:'19:00',ferme:false},
+  {jour:'Mardi',open:'09:00',close:'19:00',ferme:false},
+  {jour:'Mercredi',open:'09:00',close:'19:00',ferme:false},
+  {jour:'Jeudi',open:'09:00',close:'19:00',ferme:false},
+  {jour:'Vendredi',open:'09:00',close:'19:00',ferme:false},
+  {jour:'Samedi',open:'10:00',close:'18:00',ferme:false},
+  {jour:'Dimanche',open:'10:00',close:'14:00',ferme:false},
+];
+
+let cmdFilter='tous', cmdSearch='', pendingCmdId=null;
+
+function statutBadge(s){
+  const map={attente:['b-attente','En attente'],accepte:['b-accepte','Acceptée'],preparation:['b-preparation','En préparation'],livraison:['b-livraison','En livraison'],livre:['b-livre','Livrée'],materiel:['b-materiel','Retour matériel'],terminee:['b-terminee','Terminée'],annulee:['b-annulee','Annulée']};
+  const [cls,label]=map[s]||map.attente;
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+
+function renderCommandes(){
+  // Stats
+  ['attente','preparation','livraison','terminee'].forEach(s=>{
+    document.getElementById('stat-'+s).textContent=COMMANDES.filter(c=>c.statut===s).length;
+  });
+  let list=COMMANDES.filter(c=>{
+    if(cmdFilter!=='tous'&&c.statut!==cmdFilter)return false;
+    if(cmdSearch&&!c.client.toLowerCase().includes(cmdSearch.toLowerCase())&&!c.id.toLowerCase().includes(cmdSearch.toLowerCase()))return false;
+    return true;
+  });
+  document.getElementById('cmd-tbody').innerHTML=list.map(c=>`
+    <tr>
+      <td style="font-size:0.75rem;color:var(--vg-muted);font-weight:500;">${c.id}</td>
+      <td class="td-client"><div style="font-weight:500;">${c.client}</div><div style="font-size:0.72rem;color:var(--vg-muted);">${c.email}</div></td>
+      <td class="td-menu">${c.menu}</td>
+      <td class="td-date">${c.date}<br>${c.heure} · ${c.persons} pers.</td>
+      <td>${c.persons}</td>
+      <td class="td-prix">${c.prix}</td>
+      <td>${statutBadge(c.statut)}</td>
+      <td>
+        <div class="td-actions">
+          ${c.statut!=='terminee'&&c.statut!=='annulee'?`<button class="btn-xs primary" onclick="openStatut('${c.id}')"><i class="ti ti-refresh"></i> Statut</button>`:''}
+          ${c.statut!=='terminee'&&c.statut!=='annulee'?`<button class="btn-xs danger" onclick="openAnnul('${c.id}')"><i class="ti ti-x"></i> Annuler</button>`:''}
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterCmd(f,btn){
+  cmdFilter=f;
+  document.querySelectorAll('.filter-pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCommandes();
+}
+function searchCmd(v){cmdSearch=v;renderCommandes();}
+
+function openStatut(id){
+  pendingCmdId=id;
+  const c=COMMANDES.find(x=>x.id===id);
+  document.getElementById('ms-ref').textContent=id;
+  document.getElementById('ms-menu').textContent=c.menu;
+  document.getElementById('ms-statut').value=c.statut;
+  document.getElementById('modal-statut').classList.add('open');
+}
+function doStatut(){
+  const c=COMMANDES.find(x=>x.id===pendingCmdId);
+  if(c){c.statut=document.getElementById('ms-statut').value;}
+  closeModal('modal-statut');
+  renderCommandes();
+  showToast('Statut mis à jour avec succès');
+}
+
+function openAnnul(id){pendingCmdId=id;document.getElementById('modal-annul').classList.add('open');}
+function doAnnul(){
+  const contact=document.getElementById('ann-contact').value;
+  const motif=document.getElementById('ann-motif').value;
+  if(!contact||!motif){alert('Veuillez renseigner le mode de contact et le motif.');return;}
+  const c=COMMANDES.find(x=>x.id===pendingCmdId);
+  if(c)c.statut='annulee';
+  closeModal('modal-annul');
+  renderCommandes();
+  showToast('Commande annulée — client à notifier');
+}
+
+function renderMenus(){
+  document.getElementById('menus-grid').innerHTML=
+    MENUS_DATA.map(m=>`
+      <div class="item-card">
+        <div class="item-name">${m.titre}</div>
+        <div class="item-meta">${m.theme} · ${m.regime} · ${m.prix}€ / ${m.persons} pers. · Stock : ${m.stock}</div>
+        <div class="item-actions">
+          <button class="btn-xs primary" onclick="openMenuEdit(${m.id})"><i class="ti ti-edit"></i> Modifier</button>
+          <button class="btn-xs danger" onclick="deleteItem('menu',${m.id})"><i class="ti ti-trash"></i> Supprimer</button>
+        </div>
+      </div>
+    `).join('')+`
+    <div class="add-btn" onclick="openMenuNew()"><i class="ti ti-plus" style="font-size:18px;color:var(--vg-gold);"></i> Ajouter un menu</div>`;
+}
+
+function openMenuEdit(id){
+  const m=MENUS_DATA.find(x=>x.id===id);
+  document.getElementById('modal-menu-title').textContent='Modifier le menu';
+  document.getElementById('me-titre').value=m.titre;
+  document.getElementById('me-theme').value=m.theme;
+  document.getElementById('me-regime').value=m.regime;
+  document.getElementById('me-persons').value=m.persons;
+  document.getElementById('me-prix').value=m.prix;
+  document.getElementById('me-stock').value=m.stock;
+  document.getElementById('modal-menu').classList.add('open');
+}
+function openMenuNew(){
+  document.getElementById('modal-menu-title').textContent='Ajouter un menu';
+  ['me-titre','me-desc','me-cond'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('modal-menu').classList.add('open');
+}
+function saveMenu(){closeModal('modal-menu');showToast('Menu enregistré avec succès');}
+function deleteItem(type,id){if(confirm('Supprimer cet élément ?')){showToast('Élément supprimé');if(type==='menu')renderMenus();else renderPlats();}}
+
+function renderPlats(){
+  document.getElementById('plats-grid').innerHTML=
+    PLATS_DATA.map(p=>`
+      <div class="item-card">
+        <div class="item-name">${p.nom}</div>
+        <div class="item-meta">${p.type} · Allergènes : ${p.allergens}</div>
+        <div class="item-actions">
+          <button class="btn-xs primary" onclick="openPlatEdit(${p.id})"><i class="ti ti-edit"></i> Modifier</button>
+          <button class="btn-xs danger" onclick="deleteItem('plat',${p.id})"><i class="ti ti-trash"></i> Supprimer</button>
+        </div>
+      </div>
+    `).join('')+`
+    <div class="add-btn" onclick="openPlatNew()"><i class="ti ti-plus" style="font-size:18px;color:var(--vg-gold);"></i> Ajouter un plat</div>`;
+}
+function openPlatEdit(id){
+  const p=PLATS_DATA.find(x=>x.id===id);
+  document.getElementById('modal-plat-title').textContent='Modifier le plat';
+  document.getElementById('pl-nom').value=p.nom;
+  document.getElementById('pl-type').value=p.type;
+  document.getElementById('pl-allergens').value=p.allergens;
+  document.getElementById('modal-plat').classList.add('open');
+}
+function openPlatNew(){
+  document.getElementById('modal-plat-title').textContent='Ajouter un plat';
+  ['pl-nom','pl-allergens'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('modal-plat').classList.add('open');
+}
+function savePlat(){closeModal('modal-plat');showToast('Plat enregistré avec succès');}
+
+function renderAvis(){
+  document.getElementById('avis-list').innerHTML=AVIS_DATA.map(a=>`
+    <div class="avis-card ${a.statut==='pending'?'avis-pending':''}">
+      <div class="avis-header">
+        <div>
+          ${a.statut==='pending'?'<span class="pending-tag">En attente de validation</span><br>':''}
+          <div class="avis-stars">${'★'.repeat(a.note)}${'☆'.repeat(5-a.note)}</div>
+          <div class="avis-author">${a.client}</div>
+          <div class="avis-menu">${a.menu}</div>
+        </div>
+        <span class="badge ${a.statut==='valide'?'b-livre':'b-attente'}">${a.statut==='valide'?'Validé':'En attente'}</span>
+      </div>
+      <p class="avis-text">"${a.texte}"</p>
+      ${a.statut==='pending'?`
+      <div class="avis-actions">
+        <button class="btn-xs success" onclick="validerAvis(${a.id})"><i class="ti ti-check"></i> Valider</button>
+        <button class="btn-xs danger" onclick="refuserAvis(${a.id})"><i class="ti ti-x"></i> Refuser</button>
+      </div>`:''}
+    </div>
+  `).join('');
+}
+function validerAvis(id){
+  const a=AVIS_DATA.find(x=>x.id===id);
+  if(a)a.statut='valide';
+  document.getElementById('notif-avis').textContent=AVIS_DATA.filter(x=>x.statut==='pending').length||'';
+  renderAvis();showToast('Avis validé — visible sur la page d\'accueil');
+}
+function refuserAvis(id){
+  const i=AVIS_DATA.findIndex(x=>x.id===id);
+  if(i>-1)AVIS_DATA.splice(i,1);
+  document.getElementById('notif-avis').textContent=AVIS_DATA.filter(x=>x.statut==='pending').length||'';
+  renderAvis();showToast('Avis refusé et supprimé');
+}
+
+function renderHoraires(){
+  document.getElementById('horaires-grid').innerHTML=HORAIRES.map((h,i)=>`
+    <div class="horaire-row">
+      <div class="horaire-day">${h.jour}</div>
+      <div class="horaire-inputs">
+        <input type="time" value="${h.open}" id="ho-${i}">
+        <span class="horaire-sep">→</span>
+        <input type="time" value="${h.close}" id="hc-${i}">
+      </div>
+    </div>
+  `).join('');
+}
+function saveHoraires(){showToast('Horaires enregistrés avec succès');}
+
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+function showPage(p){
+  ['commandes','menus','plats','avis','horaires'].forEach(pg=>{
+    document.getElementById('page-'+pg).classList.toggle('page-hidden',pg!==p);
+  });
+  document.querySelectorAll('.side-link').forEach((el,i)=>{
+    el.classList.toggle('active',['commandes','menus','plats','avis','horaires'][i]===p);
+  });
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+renderCommandes();
+renderMenus();
+renderPlats();
+renderAvis();
+renderHoraires();
+</script>

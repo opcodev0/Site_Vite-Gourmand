@@ -1,0 +1,309 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --vg-cream:#FAF8F3;--vg-dark:#1C1810;--vg-gold:#B8860B;--vg-gold-light:#D4A520;
+    --vg-warm:#F5EFE0;--vg-muted:#7A6E5A;--vg-green:#2D4A2D;--vg-border:#E8DFC8;
+  }
+  body{font-family:'DM Sans',sans-serif;background:var(--vg-cream);color:var(--vg-dark);}
+
+  /* NAV */
+  nav{background:var(--vg-dark);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:64px;position:sticky;top:0;z-index:100;}
+  .nav-logo{font-family:'Playfair Display',serif;color:#FAF8F3;font-size:1.25rem;letter-spacing:0.04em;}
+  .nav-logo span{color:var(--vg-gold-light);}
+  .nav-links{display:flex;gap:2rem;list-style:none;}
+  .nav-links a{color:#C8BFA8;font-size:0.875rem;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s;}
+  .nav-links a:hover{color:#FAF8F3;}
+  .nav-cta{background:var(--vg-gold);color:#1C1810;font-size:0.8rem;font-weight:500;padding:8px 20px;border:none;cursor:pointer;letter-spacing:0.06em;text-transform:uppercase;}
+
+  /* HERO */
+  .hero{min-height:520px;background:var(--vg-dark);display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;}
+  .hero-left{padding:4rem 3rem 4rem 2.5rem;display:flex;flex-direction:column;justify-content:center;gap:1.5rem;}
+  .hero-tag{font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--vg-gold-light);font-weight:500;}
+  .hero-title{font-family:'Playfair Display',serif;font-size:3rem;line-height:1.15;color:#FAF8F3;}
+  .hero-title em{color:var(--vg-gold-light);font-style:italic;}
+  .hero-sub{color:#A89E88;font-size:0.975rem;line-height:1.7;max-width:380px;}
+  .hero-actions{display:flex;gap:1rem;align-items:center;margin-top:0.5rem;}
+  .btn-primary{background:var(--vg-gold);color:var(--vg-dark);padding:12px 28px;font-size:0.85rem;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;border:none;cursor:pointer;}
+  .btn-ghost{color:#C8BFA8;font-size:0.85rem;letter-spacing:0.07em;text-transform:uppercase;border:none;background:none;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  .btn-ghost:hover{color:#FAF8F3;}
+  .hero-right{position:relative;overflow:hidden;}
+  .hero-img-placeholder{width:100%;height:100%;background:linear-gradient(135deg,#2A2218 0%,#3D3020 50%,#2A2218 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;}
+  .hero-img-placeholder i{font-size:64px;color:var(--vg-gold);opacity:0.4;}
+  .hero-img-placeholder p{color:#6B6050;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;}
+  .hero-badge{position:absolute;bottom:2rem;left:-1rem;background:var(--vg-gold);padding:1rem 1.5rem;display:flex;gap:0.75rem;align-items:center;}
+  .hero-badge-num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--vg-dark);font-weight:600;}
+  .hero-badge-text{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:#4A3A10;font-weight:500;line-height:1.4;}
+
+  /* STRIP */
+  .strip{background:var(--vg-warm);border-top:1px solid var(--vg-border);border-bottom:1px solid var(--vg-border);display:flex;justify-content:center;gap:4rem;padding:1.5rem 2rem;}
+  .strip-item{display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--vg-muted);}
+  .strip-item i{color:var(--vg-gold);font-size:18px;}
+
+  /* SECTION: PRESENTATION */
+  .section{padding:5rem 2.5rem;}
+  .section-label{font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--vg-gold);font-weight:500;margin-bottom:0.75rem;}
+  .section-title{font-family:'Playfair Display',serif;font-size:2.1rem;line-height:1.25;color:var(--vg-dark);margin-bottom:1.5rem;}
+  .section-title em{color:var(--vg-gold);font-style:italic;}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+  .about-text p{color:var(--vg-muted);line-height:1.8;font-size:0.975rem;margin-bottom:1rem;}
+  .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;}
+  .stat-card{background:var(--vg-warm);border:1px solid var(--vg-border);padding:1.25rem;text-align:center;}
+  .stat-num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--vg-gold);font-weight:600;}
+  .stat-label{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--vg-muted);margin-top:4px;}
+  .about-visual{background:var(--vg-warm);border:1px solid var(--vg-border);height:320px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.75rem;}
+  .about-visual i{font-size:56px;color:var(--vg-gold);opacity:0.3;}
+  .about-visual p{color:#B0A48A;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;}
+
+  /* TEAM */
+  .team-section{background:var(--vg-dark);padding:5rem 2.5rem;}
+  .team-section .section-title{color:#FAF8F3;}
+  .team-section .section-label{color:var(--vg-gold-light);}
+  .team-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem;}
+  .team-card{background:#252015;border:1px solid #3A3020;padding:2rem;position:relative;}
+  .team-avatar{width:56px;height:56px;border-radius:50%;background:var(--vg-gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--vg-dark);font-weight:600;margin-bottom:1rem;}
+  .team-name{font-family:'Playfair Display',serif;color:#FAF8F3;font-size:1.15rem;margin-bottom:0.25rem;}
+  .team-role{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--vg-gold-light);margin-bottom:1rem;}
+  .team-desc{color:#8A8070;font-size:0.875rem;line-height:1.7;}
+  .team-years{position:absolute;top:1.5rem;right:1.5rem;font-family:'Playfair Display',serif;font-size:2rem;color:#3A3020;}
+
+  /* EXPERTISE */
+  .expertise-section{padding:5rem 2.5rem;background:var(--vg-warm);}
+  .expertise-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;}
+  .expertise-card{background:var(--vg-cream);border:1px solid var(--vg-border);padding:1.75rem;transition:border-color 0.2s;}
+  .expertise-card:hover{border-color:var(--vg-gold);}
+  .expertise-icon{font-size:28px;color:var(--vg-gold);margin-bottom:1rem;}
+  .expertise-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--vg-dark);margin-bottom:0.5rem;}
+  .expertise-text{font-size:0.85rem;color:var(--vg-muted);line-height:1.65;}
+
+  /* REVIEWS */
+  .reviews-section{padding:5rem 2.5rem;}
+  .reviews-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.5rem;}
+  .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  .review-card{background:var(--vg-warm);border:1px solid var(--vg-border);padding:1.5rem;}
+  .review-stars{display:flex;gap:3px;margin-bottom:0.75rem;}
+  .review-stars i{color:var(--vg-gold);font-size:14px;}
+  .review-text{font-size:0.875rem;color:var(--vg-muted);line-height:1.7;margin-bottom:1rem;font-style:italic;}
+  .review-text::before{content:'"';font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--vg-gold);line-height:0;vertical-align:-8px;margin-right:2px;}
+  .reviewer{display:flex;align-items:center;gap:0.75rem;border-top:1px solid var(--vg-border);padding-top:1rem;}
+  .reviewer-avatar{width:36px;height:36px;border-radius:50%;background:var(--vg-dark);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:#FAF8F3;font-weight:500;}
+  .reviewer-name{font-size:0.85rem;font-weight:500;color:var(--vg-dark);}
+  .reviewer-event{font-size:0.75rem;color:var(--vg-muted);}
+  .review-badge{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--vg-green);background:#E8F0E8;padding:3px 10px;display:inline-block;margin-bottom:0.5rem;}
+
+  /* FOOTER */
+  footer{background:var(--vg-dark);padding:3rem 2.5rem 2rem;border-top:1px solid #2A2218;}
+  .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2.5rem;}
+  .footer-brand{font-family:'Playfair Display',serif;font-size:1.2rem;color:#FAF8F3;margin-bottom:0.75rem;}
+  .footer-brand span{color:var(--vg-gold-light);}
+  .footer-tagline{color:#6B6050;font-size:0.85rem;line-height:1.6;max-width:220px;}
+  .footer-col h4{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--vg-gold-light);margin-bottom:1rem;}
+  .footer-col ul{list-style:none;}
+  .footer-col ul li{margin-bottom:0.5rem;}
+  .footer-col ul li a,.footer-col ul li span{color:#6B6050;font-size:0.85rem;text-decoration:none;display:flex;align-items:center;gap:6px;}
+  .hours-row{display:flex;justify-content:space-between;font-size:0.82rem;color:#6B6050;padding:3px 0;}
+  .hours-row .day{color:#8A8070;}
+  .footer-bottom{border-top:1px solid #2A2218;padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;}
+  .footer-bottom p,.footer-bottom a{color:#4A4035;font-size:0.75rem;text-decoration:none;}
+  .footer-bottom a:hover{color:#8A8070;}
+  .footer-legal{display:flex;gap:1.5rem;}
+</style>
+
+<h2 class="sr-only">Page d'accueil — Vite &amp; Gourmand, traiteur événementiel à Bordeaux</h2>
+
+<nav>
+  <div class="nav-logo">Vite &amp; <span>Gourmand</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Accueil</a></li>
+    <li><a href="#">Nos Menus</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <button class="nav-cta">Connexion</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-tag">Traiteur événementiel · Bordeaux depuis 1999</p>
+    <h1 class="hero-title">L'art de recevoir,<br><em>sublimé</em> par nos soins.</h1>
+    <p class="hero-sub">Julie et José vous proposent des prestations sur mesure pour tous vos événements — de Noël à Pâques, en passant par vos célébrations les plus précieuses.</p>
+    <div class="hero-actions">
+      <button class="btn-primary">Découvrir nos menus</button>
+      <button class="btn-ghost"><i class="ti ti-arrow-right" aria-hidden="true"></i> Nous contacter</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-placeholder">
+      <i class="ti ti-chef-hat" aria-hidden="true"></i>
+      <p>Photo de la prestation</p>
+    </div>
+    <div class="hero-badge">
+      <span class="hero-badge-num">25</span>
+      <span class="hero-badge-text">Années<br>d'expertise</span>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="strip-item"><i class="ti ti-calendar-event" aria-hidden="true"></i> Événements privés &amp; professionnels</div>
+  <div class="strip-item"><i class="ti ti-truck-delivery" aria-hidden="true"></i> Livraison à domicile</div>
+  <div class="strip-item"><i class="ti ti-leaf" aria-hidden="true"></i> Options végétariennes &amp; vegan</div>
+  <div class="strip-item"><i class="ti ti-shield-check" aria-hidden="true"></i> Menus certifiés allergènes</div>
+</div>
+
+<section class="section">
+  <div class="about-grid">
+    <div class="about-text">
+      <p class="section-label">Notre histoire</p>
+      <h2 class="section-title">Une passion à deux,<br>une <em>excellence</em> partagée.</h2>
+      <p>Fondée en 1999 par Julie et José, Vite &amp; Gourmand est bien plus qu'une entreprise de traiteur. C'est une aventure humaine portée par l'amour de la bonne cuisine et le goût du service impeccable.</p>
+      <p>Au fil des années, nous avons façonné des menus en constante évolution, adaptés à chaque saison et à chaque célébration. Chaque plat raconte une histoire, chaque prestation est unique.</p>
+      <div class="about-stats">
+        <div class="stat-card"><div class="stat-num">500+</div><div class="stat-label">Événements réalisés</div></div>
+        <div class="stat-card"><div class="stat-num">98%</div><div class="stat-label">Clients satisfaits</div></div>
+        <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Thèmes disponibles</div></div>
+        <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Artisans passionnés</div></div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <i class="ti ti-photo" aria-hidden="true"></i>
+      <p>Photo de l'équipe</p>
+    </div>
+  </div>
+</section>
+
+<section class="team-section">
+  <p class="section-label">L'équipe</p>
+  <h2 class="section-title">Deux expertises,<br>une seule <em>vision</em>.</h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <span class="team-years">25</span>
+      <div class="team-avatar">J</div>
+      <div class="team-name">Julie</div>
+      <div class="team-role">Responsable cuisine &amp; création</div>
+      <p class="team-desc">Julie orchestre chaque menu avec une précision et une créativité sans faille. Formée dans les meilleures maisons bordelaises, elle apporte une touche raffinée à chaque prestation.</p>
+    </div>
+    <div class="team-card">
+      <span class="team-years">25</span>
+      <div class="team-avatar">J</div>
+      <div class="team-name">José</div>
+      <div class="team-role">Responsable logistique &amp; relation client</div>
+      <p class="team-desc">José veille au bon déroulement de chaque événement, de la prise de commande à la livraison. Son sens du service et sa rigueur font de chaque prestation une expérience mémorable.</p>
+    </div>
+  </div>
+</section>
+
+<section class="expertise-section">
+  <p class="section-label">Notre savoir-faire</p>
+  <h2 class="section-title">Des prestations pensées<br>dans les moindres <em>détails</em>.</h2>
+  <div class="expertise-grid">
+    <div class="expertise-card">
+      <div class="expertise-icon"><i class="ti ti-christmas-tree" aria-hidden="true"></i></div>
+      <div class="expertise-title">Événements saisonniers</div>
+      <p class="expertise-text">Noël, Pâques, fêtes de fin d'année — nous créons des menus thématiques qui s'adaptent à la magie de chaque moment.</p>
+    </div>
+    <div class="expertise-card">
+      <div class="expertise-icon"><i class="ti ti-confetti" aria-hidden="true"></i></div>
+      <div class="expertise-title">Célébrations privées</div>
+      <p class="expertise-text">Anniversaires, mariages, réunions de famille — chaque événement est unique et mérite un menu à la hauteur.</p>
+    </div>
+    <div class="expertise-card">
+      <div class="expertise-icon"><i class="ti ti-building" aria-hidden="true"></i></div>
+      <div class="expertise-title">Événements professionnels</div>
+      <p class="expertise-text">Séminaires, cocktails d'entreprise, repas d'affaires — nous proposons des formules adaptées à vos exigences professionnelles.</p>
+    </div>
+    <div class="expertise-card">
+      <div class="expertise-icon"><i class="ti ti-leaf" aria-hidden="true"></i></div>
+      <div class="expertise-title">Régimes alimentaires</div>
+      <p class="expertise-text">Végétarien, vegan, sans allergènes — tous nos menus précisent les informations nutritionnelles pour répondre à chaque besoin.</p>
+    </div>
+    <div class="expertise-card">
+      <div class="expertise-icon"><i class="ti ti-truck-delivery" aria-hidden="true"></i></div>
+      <div class="expertise-title">Livraison à votre porte</div>
+      <p class="expertise-text">Nous livrons à Bordeaux et ses alentours. La fraîcheur et la qualité de nos plats sont garanties jusqu'à votre table.</p>
+    </div>
+    <div class="expertise-card">
+      <div class="expertise-icon"><i class="ti ti-tool" aria-hidden="true"></i></div>
+      <div class="expertise-title">Matériel & installation</div>
+      <p class="expertise-text">Nous mettons à disposition du matériel de service pour faciliter votre événement. Retour du matériel dans les délais convenus.</p>
+    </div>
+  </div>
+</section>
+
+<section class="reviews-section">
+  <div class="reviews-header">
+    <div>
+      <p class="section-label">Avis clients validés</p>
+      <h2 class="section-title">Ce que nos clients<br>disent de <em>nous</em>.</h2>
+    </div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-badge"><i class="ti ti-check" aria-hidden="true"></i> Avis vérifié</div>
+      <div class="review-stars"><i class="ti ti-star-filled" aria-hidden="true"></i><i class="ti ti-star-filled" aria-hidden="true"></i><i class="ti ti-star-filled" aria-hidden="true"></i><i class="ti ti-star-filled" aria-hidden="true"></i><i class="ti ti-star-filled" aria-hidden="true"></i></div>
+      <p class="review-text">Un repas de Noël absolument exceptionnel. Les plats étaient raffinés, la livraison parfaitement à l'heure. Toute la famille a été conquise !</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">ML</div>
+        <div><div class="reviewer-name">Marie-Louise T.</div><div class="reviewer-event">Repas de Noël en famille</div></div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-badge"><i class="ti ti-check" aria-hidden="true"></i> Avis vérifié</div>
+      <div class="review-stars"><i class="ti ti-star-filled" aria-hidden="true"></i><i class="ti ti-star-filled" aria-hidden="true"></i><i class="ti ti-star-filled" aria-hidden="true"></i><i class="ti ti-star-filled" aria-hidden="true"></i><i class="ti ti-star-filled" aria-hidden="true"></i></div>
+      <p class="review-text">José et Julie sont de vrais professionnels. Notre séminaire d'entreprise s'est déroulé parfaitement. Je recommande vivement leur menu classique.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">PD</div>
+        <div><div class="reviewer-name">Pierre D.</div><div class="reviewer-event">Séminaire d'entreprise · 35 personnes</div></div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-badge"><i class="ti ti-check" aria-hidden="true"></i> Avis vérifié</div>
+      <div class="review-stars"><i class="ti ti-star-filled" aria-hidden="true"></i><i class="ti ti-star-filled" aria-hidden="true"></i><i class="ti ti-star-filled" aria-hidden="true"></i><i class="ti ti-star-filled" aria-hidden="true"></i><i class="ti ti-star" aria-hidden="true"></i></div>
+      <p class="review-text">Menu de Pâques délicieux, portions généreuses et présentation soignée. La commande en ligne est simple et rapide. On reviendra sans hésiter.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">SC</div>
+        <div><div class="reviewer-name">Sophie C.</div><div class="reviewer-event">Repas de Pâques · 12 personnes</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">Vite &amp; <span>Gourmand</span></div>
+      <p class="footer-tagline">Traiteur événementiel à Bordeaux depuis 1999. Julie et José à votre service.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#">Accueil</a></li>
+        <li><a href="#">Nos menus</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Mon compte</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Horaires</h4>
+      <div class="hours-row"><span class="day">Lun – Ven</span><span>9h – 19h</span></div>
+      <div class="hours-row"><span class="day">Samedi</span><span>10h – 18h</span></div>
+      <div class="hours-row"><span class="day">Dimanche</span><span>10h – 14h</span></div>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><span><i class="ti ti-mail" aria-hidden="true"></i> contact@vitegourmand.fr</span></li>
+        <li><span><i class="ti ti-phone" aria-hidden="true"></i> 05 56 XX XX XX</span></li>
+        <li><span><i class="ti ti-map-pin" aria-hidden="true"></i> Bordeaux, 33000</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Vite &amp; Gourmand — Tous droits réservés</p>
+    <div class="footer-legal">
+      <a href="#">Mentions légales</a>
+      <a href="#">Conditions générales de vente</a>
+      <a href="#">Politique de confidentialité</a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,384 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --vg-cream:#FAF8F3;--vg-dark:#1C1810;--vg-gold:#B8860B;--vg-gold-light:#D4A520;
+  --vg-warm:#F5EFE0;--vg-muted:#7A6E5A;--vg-border:#E8DFC8;--vg-green:#2D4A2D;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--vg-cream);color:var(--vg-dark);}
+
+nav{background:var(--vg-dark);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:64px;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Playfair Display',serif;color:#FAF8F3;font-size:1.25rem;letter-spacing:0.04em;}
+.nav-logo span{color:var(--vg-gold-light);}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{color:#C8BFA8;font-size:0.8rem;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;}
+.nav-links a.active{color:#FAF8F3;}
+.nav-cta{background:var(--vg-gold);color:#1C1810;font-size:0.8rem;font-weight:500;padding:8px 20px;border:none;cursor:pointer;letter-spacing:0.06em;text-transform:uppercase;}
+
+/* PAGE HEADER */
+.page-header{background:var(--vg-dark);padding:3rem 2.5rem 2.5rem;}
+.page-header-label{font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.6rem;}
+.page-header-title{font-family:'Playfair Display',serif;font-size:2.2rem;color:#FAF8F3;margin-bottom:0.5rem;}
+.page-header-title em{color:var(--vg-gold-light);font-style:italic;}
+.page-header-sub{color:#6B6050;font-size:0.9rem;max-width:500px;line-height:1.6;}
+
+/* LAYOUT */
+.main-layout{display:grid;grid-template-columns:260px 1fr;gap:0;min-height:calc(100vh - 64px - 148px);}
+
+/* SIDEBAR FILTERS */
+.sidebar{background:var(--vg-warm);border-right:1px solid var(--vg-border);padding:2rem 1.5rem;position:sticky;top:64px;height:fit-content;}
+.filter-section{margin-bottom:2rem;}
+.filter-title{font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--vg-muted);margin-bottom:1rem;display:flex;align-items:center;gap:6px;}
+.filter-title i{font-size:14px;color:var(--vg-gold);}
+
+/* theme pills */
+.theme-pills{display:flex;flex-wrap:wrap;gap:0.4rem;}
+.pill{padding:5px 12px;border:1px solid var(--vg-border);background:#fff;font-size:0.78rem;cursor:pointer;color:var(--vg-muted);transition:all 0.15s;}
+.pill:hover{border-color:var(--vg-gold);color:var(--vg-dark);}
+.pill.active{background:var(--vg-dark);color:#FAF8F3;border-color:var(--vg-dark);}
+
+/* regime pills */
+.regime-pills{display:flex;flex-direction:column;gap:0.4rem;}
+.regime-pill{padding:7px 12px;border:1px solid var(--vg-border);background:#fff;font-size:0.8rem;cursor:pointer;color:var(--vg-muted);transition:all 0.15s;display:flex;align-items:center;gap:8px;}
+.regime-pill i{font-size:14px;}
+.regime-pill:hover{border-color:var(--vg-gold);color:var(--vg-dark);}
+.regime-pill.active{background:var(--vg-dark);color:#FAF8F3;border-color:var(--vg-dark);}
+
+/* range sliders */
+.range-wrap{margin-top:0.5rem;}
+.range-row{display:flex;justify-content:space-between;font-size:0.78rem;color:var(--vg-muted);margin-bottom:6px;}
+.range-val{font-weight:500;color:var(--vg-dark);}
+input[type=range]{width:100%;accent-color:var(--vg-dark);}
+
+/* persons filter */
+.persons-row{display:flex;gap:0.4rem;flex-wrap:wrap;}
+.person-btn{width:36px;height:36px;border:1px solid var(--vg-border);background:#fff;font-size:0.8rem;cursor:pointer;color:var(--vg-muted);transition:all 0.15s;}
+.person-btn:hover{border-color:var(--vg-gold);}
+.person-btn.active{background:var(--vg-dark);color:#FAF8F3;border-color:var(--vg-dark);}
+
+.reset-filters{width:100%;padding:8px;border:1px solid var(--vg-border);background:none;font-family:'DM Sans',sans-serif;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--vg-muted);cursor:pointer;margin-top:0.5rem;}
+.reset-filters:hover{border-color:var(--vg-dark);color:var(--vg-dark);}
+
+/* CONTENT */
+.content{padding:2rem 2rem;}
+.content-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
+.results-count{font-size:0.85rem;color:var(--vg-muted);}
+.results-count strong{color:var(--vg-dark);}
+.sort-select{border:1px solid var(--vg-border);background:#fff;font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--vg-dark);padding:7px 12px;cursor:pointer;outline:none;}
+
+/* MENU CARDS */
+.menus-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;}
+.menu-card{background:#fff;border:1px solid var(--vg-border);transition:border-color 0.2s;display:flex;flex-direction:column;}
+.menu-card:hover{border-color:var(--vg-gold);}
+.card-img{height:160px;background:var(--vg-warm);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;position:relative;overflow:hidden;}
+.card-img i{font-size:40px;color:var(--vg-gold);opacity:0.3;}
+.card-img-label{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:#B0A48A;}
+.card-theme-badge{position:absolute;top:0.75rem;left:0.75rem;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;font-weight:500;}
+.badge-noel{background:#1C1810;color:var(--vg-gold-light);}
+.badge-paques{background:#2D4A2D;color:#C0DD97;}
+.badge-classique{background:#3A3020;color:#D4A520;}
+.badge-evenement{background:#4A2020;color:#F09595;}
+.card-regime-badge{position:absolute;top:0.75rem;right:0.75rem;font-size:0.68px;padding:3px 8px;}
+.badge-vegan{background:#EAF3DE;color:#3B6D11;font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;}
+.badge-vegetarien{background:#E1F5EE;color:#0F6E56;font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;}
+.badge-classique-reg{background:var(--vg-warm);color:var(--vg-muted);font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;}
+
+.card-body{padding:1.25rem;flex:1;display:flex;flex-direction:column;gap:0.75rem;}
+.card-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--vg-dark);}
+.card-desc{font-size:0.83rem;color:var(--vg-muted);line-height:1.65;flex:1;}
+.card-meta{display:flex;gap:1rem;padding-top:0.75rem;border-top:1px solid var(--vg-border);}
+.meta-item{display:flex;align-items:center;gap:5px;font-size:0.78rem;color:var(--vg-muted);}
+.meta-item i{font-size:14px;color:var(--vg-gold);}
+.meta-item strong{color:var(--vg-dark);font-weight:500;}
+.card-footer{padding:0 1.25rem 1.25rem;display:flex;align-items:center;justify-content:space-between;}
+.card-price{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--vg-dark);}
+.card-price span{font-size:0.75rem;font-family:'DM Sans',sans-serif;color:var(--vg-muted);font-weight:400;}
+.btn-detail{background:var(--vg-dark);color:#FAF8F3;padding:9px 20px;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;transition:background 0.2s;}
+.btn-detail:hover{background:#2A2218;}
+.stock-low{font-size:0.72rem;color:#A32D2D;display:flex;align-items:center;gap:4px;padding:0 1.25rem 0.75rem;}
+.stock-low i{font-size:13px;}
+
+/* EMPTY STATE */
+.empty-state{grid-column:1/-1;padding:4rem;text-align:center;}
+.empty-state i{font-size:48px;color:var(--vg-border);margin-bottom:1rem;}
+.empty-state p{color:var(--vg-muted);font-size:0.9rem;}
+.empty-state a{color:var(--vg-gold);cursor:pointer;}
+
+/* DETAIL MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(20,16,8,0.88);z-index:200;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--vg-cream);width:100%;max-width:680px;position:relative;margin:auto;}
+.modal-img{height:220px;background:var(--vg-warm);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;}
+.modal-img i{font-size:56px;color:var(--vg-gold);opacity:0.25;}
+.modal-img p{font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#B0A48A;}
+.modal-content{padding:2rem;}
+.modal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--vg-dark);}
+.modal-badges{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--vg-muted);font-size:24px;flex-shrink:0;padding:0;}
+.modal-section{margin-bottom:1.5rem;}
+.modal-section-title{font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.75rem;}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+.modal-info-card{background:var(--vg-warm);border:1px solid var(--vg-border);padding:0.9rem 1rem;}
+.modal-info-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--vg-muted);margin-bottom:0.25rem;}
+.modal-info-val{font-size:0.95rem;color:var(--vg-dark);font-weight:500;}
+.plat-row{display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--vg-border);font-size:0.875rem;}
+.plat-row:last-child{border-bottom:none;}
+.plat-name{color:var(--vg-dark);}
+.plat-type{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--vg-muted);}
+.allergen-tags{display:flex;flex-wrap:wrap;gap:0.4rem;}
+.allergen-tag{background:#FAECE7;border:1px solid #F5C4B3;color:#993C1D;font-size:0.72rem;padding:3px 10px;letter-spacing:0.06em;}
+.conditions-box{background:#FAEEDA;border-left:3px solid var(--vg-gold);padding:1rem;font-size:0.85rem;color:#633806;line-height:1.65;}
+.conditions-box strong{display:flex;align-items:center;gap:6px;margin-bottom:0.4rem;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;}
+.modal-price-bar{display:flex;align-items:center;justify-content:space-between;background:var(--vg-dark);padding:1.25rem 2rem;}
+.modal-price-label{color:#6B6050;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;}
+.modal-price-val{font-family:'Playfair Display',serif;font-size:1.8rem;color:#FAF8F3;}
+.modal-price-val span{font-size:0.8rem;font-family:'DM Sans',sans-serif;color:#6B6050;font-weight:400;}
+.btn-commander{background:var(--vg-gold);color:var(--vg-dark);padding:12px 32px;font-size:0.85rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;border:none;cursor:pointer;}
+</style>
+
+<h2 class="sr-only">Vue globale des menus — Vite &amp; Gourmand</h2>
+
+<nav>
+  <div class="nav-logo">Vite &amp; <span>Gourmand</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Accueil</a></li>
+    <li><a href="#" class="active">Nos Menus</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <button class="nav-cta">Connexion</button>
+</nav>
+
+<div class="page-header">
+  <p class="page-header-label">Traiteur événementiel · Bordeaux</p>
+  <h1 class="page-header-title">Tous nos <em>menus</em></h1>
+  <p class="page-header-sub">Découvrez l'ensemble de nos créations culinaires — des menus de saison aux formules classiques. Filtrez selon vos besoins et passez commande en ligne.</p>
+</div>
+
+<div class="main-layout">
+  <aside class="sidebar" aria-label="Filtres">
+    <div class="filter-section">
+      <div class="filter-title"><i class="ti ti-tag" aria-hidden="true"></i> Thème</div>
+      <div class="theme-pills">
+        <button class="pill active" onclick="toggleTheme('tous')">Tous</button>
+        <button class="pill" onclick="toggleTheme('Noël')">🎄 Noël</button>
+        <button class="pill" onclick="toggleTheme('Pâques')">🐣 Pâques</button>
+        <button class="pill" onclick="toggleTheme('Classique')">🍽️ Classique</button>
+        <button class="pill" onclick="toggleTheme('Événement')">🎉 Événement</button>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-title"><i class="ti ti-leaf" aria-hidden="true"></i> Régime</div>
+      <div class="regime-pills">
+        <button class="regime-pill active" onclick="toggleRegime('tous')"><i class="ti ti-circle-check" aria-hidden="true"></i> Tous</button>
+        <button class="regime-pill" onclick="toggleRegime('Classique')"><i class="ti ti-meat" aria-hidden="true"></i> Classique</button>
+        <button class="regime-pill" onclick="toggleRegime('Végétarien')"><i class="ti ti-plant" aria-hidden="true"></i> Végétarien</button>
+        <button class="regime-pill" onclick="toggleRegime('Vegan')"><i class="ti ti-leaf" aria-hidden="true"></i> Vegan</button>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-title"><i class="ti ti-currency-euro" aria-hidden="true"></i> Prix maximum</div>
+      <div class="range-wrap">
+        <div class="range-row"><span>0 €</span><span class="range-val" id="max-price-val">300 €</span></div>
+        <input type="range" min="50" max="300" value="300" step="10" id="max-price" oninput="updateFilters()">
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-title"><i class="ti ti-users" aria-hidden="true"></i> Personnes minimum</div>
+      <div class="persons-row">
+        <button class="person-btn active" onclick="togglePersons(0)">Tous</button>
+        <button class="person-btn" onclick="togglePersons(5)">5+</button>
+        <button class="person-btn" onclick="togglePersons(10)">10+</button>
+        <button class="person-btn" onclick="togglePersons(20)">20+</button>
+      </div>
+    </div>
+
+    <button class="reset-filters" onclick="resetFilters()"><i class="ti ti-refresh" aria-hidden="true"></i> Réinitialiser</button>
+  </aside>
+
+  <main class="content">
+    <div class="content-bar">
+      <p class="results-count"><strong id="count">6</strong> menu(x) disponible(s)</p>
+      <select class="sort-select" onchange="sortMenus(this.value)">
+        <option value="default">Trier par défaut</option>
+        <option value="price-asc">Prix croissant</option>
+        <option value="price-desc">Prix décroissant</option>
+        <option value="persons">Personnes minimum</option>
+      </select>
+    </div>
+    <div class="menus-grid" id="menus-grid"></div>
+  </main>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-label="Détail du menu">
+  <div class="modal-box">
+    <div class="modal-img"><i class="ti ti-photo" aria-hidden="true"></i><p>Galerie photo</p></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="m-title"></div>
+          <div class="modal-badges" id="m-badges"></div>
+        </div>
+        <button class="modal-close" onclick="closeModal()" aria-label="Fermer"><i class="ti ti-x" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Présentation</div>
+        <p style="font-size:0.875rem;color:var(--vg-muted);line-height:1.7;" id="m-desc"></p>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Informations</div>
+        <div class="modal-grid" id="m-info"></div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Composition du menu</div>
+        <div id="m-plats"></div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Allergènes</div>
+        <div class="allergen-tags" id="m-allergens"></div>
+      </div>
+
+      <div class="modal-section">
+        <div class="conditions-box">
+          <strong><i class="ti ti-alert-triangle" aria-hidden="true"></i> Conditions importantes</strong>
+          <span id="m-conditions"></span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-price-bar">
+      <div>
+        <div class="modal-price-label">À partir de</div>
+        <div class="modal-price-val" id="m-price"></div>
+      </div>
+      <button class="btn-commander" onclick="closeModal()">Commander ce menu <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+    </div>
+  </div>
+</div>
+
+<script>
+const MENUS=[
+  {id:1,titre:"Menu Festif de Noël",theme:"Noël",regime:"Classique",desc:"Un menu raffiné pour sublimer votre réveillon. Foie gras maison, chapon rôti aux marrons et bûche glacée signature — une expérience gastronomique inoubliable.",prix:185,personnes:8,stock:5,plats:[{nom:"Foie gras maison & toast brioche",type:"Entrée"},{nom:"Velouté de châtaignes",type:"Entrée"},{nom:"Chapon rôti aux marrons",type:"Plat"},{nom:"Gratin dauphinois",type:"Accompagnement"},{nom:"Bûche glacée signature",type:"Dessert"}],allergens:["Gluten","Lait","Œufs","Céleri"],conditions:"Commande requise minimum 7 jours avant la prestation. Conservation entre 0°C et 4°C. Matériel de service fourni et à restituer sous 10 jours ouvrés."},
+  {id:2,titre:"Menu Pâques Tradition",theme:"Pâques",regime:"Classique",desc:"La tradition pascale revisitée avec finesse. Un menu printanier autour de l'agneau de lait, des légumes de saison et d'une Charlotte aux fraises fraîches.",prix:95,personnes:6,stock:12,plats:[{nom:"Asperges blanches sauce mousseline",type:"Entrée"},{nom:"Gigot d'agneau & légumes printaniers",type:"Plat"},{nom:"Fromages affinés",type:"Fromage"},{nom:"Charlotte aux fraises",type:"Dessert"}],allergens:["Lait","Œufs","Moutarde"],conditions:"Commande minimum 5 jours avant la prestation. Menu disponible uniquement en période pascale (mars–avril)."},
+  {id:3,titre:"Formule Classique Conviviale",theme:"Classique",regime:"Classique",desc:"Notre formule intemporelle, parfaite pour tous les rassemblements. Un menu équilibré et savoureux qui plaira à tous vos convives, de l'entrée au dessert.",prix:65,personnes:10,stock:20,plats:[{nom:"Salade de chèvre chaud & noix",type:"Entrée"},{nom:"Magret de canard & gratin",type:"Plat"},{nom:"Plateau de fromages",type:"Fromage"},{nom:"Tarte Tatin maison",type:"Dessert"}],allergens:["Gluten","Lait","Fruits à coque"],conditions:"Commande requise minimum 3 jours avant la prestation. Livraison dans un rayon de 30 km autour de Bordeaux."},
+  {id:4,titre:"Banquet Végétarien Printemps",theme:"Événement",regime:"Végétarien",desc:"Un festin entièrement végétarien, coloré et généreux. Des légumes de saison sublimés par nos chefs pour une expérience culinaire aussi savoureuse que responsable.",prix:72,personnes:8,stock:8,plats:[{nom:"Tartare de légumes & herbes fraîches",type:"Entrée"},{nom:"Risotto aux champignons & parmesan",type:"Plat"},{nom:"Légumes rôtis & quinoa",type:"Accompagnement"},{nom:"Fondant au chocolat & coulis framboise",type:"Dessert"}],allergens:["Lait","Œufs","Gluten"],conditions:"Commande minimum 4 jours avant la prestation. Tous nos produits végétariens sont certifiés sans viande ni poisson."},
+  {id:5,titre:"Menu Vegan Été",theme:"Classique",regime:"Vegan",desc:"Notre proposition 100% végétale, fraîche et inventive. Un menu entièrement vegan élaboré à partir de produits locaux et de saison, sans compromis sur le goût.",prix:58,personnes:5,stock:15,plats:[{nom:"Gaspacho andalou maison",type:"Entrée"},{nom:"Curry de légumes & riz thaï",type:"Plat"},{nom:"Salade de fruits exotiques & sorbet",type:"Dessert"}],allergens:["Sésame","Céleri"],conditions:"Commande minimum 3 jours avant. Aucun produit d'origine animale. Emballages recyclables fournis."},
+  {id:6,titre:"Gala Prestige Événementiel",theme:"Événement",regime:"Classique",desc:"Notre offre la plus exclusive pour vos événements d'exception. Cocktail dînatoire raffiné, service à table et mise à disposition de matériel haut de gamme inclus.",prix:240,personnes:20,stock:3,plats:[{nom:"Verrines de saumon fumé & crème citronnée",type:"Amuse-bouche"},{nom:"Tartare de bœuf & truffe",type:"Entrée"},{nom:"Filet de bœuf Wellington",type:"Plat"},{nom:"Mille-feuille vanille bourbon",type:"Dessert"}],allergens:["Gluten","Lait","Œufs","Poissons","Moutarde"],conditions:"Commande minimum 14 jours avant l'événement. Matériel haut de gamme fourni et à restituer sous 10 jours ouvrés. Facturation de 600€ en cas de non-restitution (CGV art. 8). Livraison possible hors Bordeaux avec supplément kilométrique."}
+];
+
+let filters={theme:'tous',regime:'tous',maxPrice:300,minPersons:0};
+let sortMode='default';
+
+function getBadgeClass(theme){return{Noël:'badge-noel',Pâques:'badge-paques',Classique:'badge-classique',Événement:'badge-evenement'}[theme]||'badge-classique';}
+function getRegimeBadge(r){return{Vegan:'badge-vegan',Végétarien:'badge-vegetarien',Classique:'badge-classique-reg'}[r]||'badge-classique-reg';}
+
+function filteredMenus(){
+  let list=MENUS.filter(m=>{
+    if(filters.theme!=='tous'&&m.theme!==filters.theme)return false;
+    if(filters.regime!=='tous'&&m.regime!==filters.regime)return false;
+    if(m.prix>filters.maxPrice)return false;
+    if(m.personnes<filters.minPersons)return false;
+    return true;
+  });
+  if(sortMode==='price-asc')list.sort((a,b)=>a.prix-b.prix);
+  else if(sortMode==='price-desc')list.sort((a,b)=>b.prix-a.prix);
+  else if(sortMode==='persons')list.sort((a,b)=>a.personnes-b.personnes);
+  return list;
+}
+
+function renderMenus(){
+  const list=filteredMenus();
+  const grid=document.getElementById('menus-grid');
+  document.getElementById('count').textContent=list.length;
+  if(!list.length){
+    grid.innerHTML=`<div class="empty-state"><i class="ti ti-search-off" aria-hidden="true"></i><p>Aucun menu ne correspond à vos critères.<br><a onclick="resetFilters()">Réinitialiser les filtres</a></p></div>`;
+    return;
+  }
+  grid.innerHTML=list.map(m=>`
+    <article class="menu-card">
+      <div class="card-img">
+        <i class="ti ti-photo" aria-hidden="true"></i>
+        <p class="card-img-label">Photo du menu</p>
+        <span class="card-theme-badge ${getBadgeClass(m.theme)}">${m.theme}</span>
+        <span class="card-regime-badge ${getRegimeBadge(m.regime)}">${m.regime}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${m.titre}</div>
+        <div class="card-desc">${m.desc.substring(0,110)}…</div>
+        <div class="card-meta">
+          <div class="meta-item"><i class="ti ti-users" aria-hidden="true"></i> <strong>${m.personnes}</strong>&nbsp;pers. min.</div>
+          <div class="meta-item"><i class="ti ti-stack" aria-hidden="true"></i> <strong>${m.stock}</strong>&nbsp;dispo.</div>
+          <div class="meta-item"><i class="ti ti-clock" aria-hidden="true"></i> <strong>${m.plats.length}</strong>&nbsp;plats</div>
+        </div>
+      </div>
+      ${m.stock<=5?`<div class="stock-low"><i class="ti ti-alert-circle" aria-hidden="true"></i> Plus que ${m.stock} commande(s) disponible(s)</div>`:''}
+      <div class="card-footer">
+        <div class="card-price">${m.prix} €<span> / ${m.personnes} pers.</span></div>
+        <button class="btn-detail" onclick="openModal(${m.id})">Voir le menu</button>
+      </div>
+    </article>
+  `).join('');
+}
+
+function openModal(id){
+  const m=MENUS.find(x=>x.id===id);
+  document.getElementById('m-title').textContent=m.titre;
+  document.getElementById('m-badges').innerHTML=`<span class="card-theme-badge ${getBadgeClass(m.theme)}" style="position:static">${m.theme}</span><span class="card-regime-badge ${getRegimeBadge(m.regime)}" style="position:static;padding:3px 10px;">${m.regime}</span>`;
+  document.getElementById('m-desc').textContent=m.desc;
+  document.getElementById('m-info').innerHTML=`
+    <div class="modal-info-card"><div class="modal-info-label">Personnes minimum</div><div class="modal-info-val">${m.personnes} personnes</div></div>
+    <div class="modal-info-card"><div class="modal-info-label">Stock disponible</div><div class="modal-info-val">${m.stock} commande(s)</div></div>
+    <div class="modal-info-card"><div class="modal-info-label">Thème</div><div class="modal-info-val">${m.theme}</div></div>
+    <div class="modal-info-card"><div class="modal-info-label">Régime</div><div class="modal-info-val">${m.regime}</div></div>
+  `;
+  document.getElementById('m-plats').innerHTML=m.plats.map(p=>`<div class="plat-row"><span class="plat-name">${p.nom}</span><span class="plat-type">${p.type}</span></div>`).join('');
+  document.getElementById('m-allergens').innerHTML=m.allergens.map(a=>`<span class="allergen-tag">${a}</span>`).join('');
+  document.getElementById('m-conditions').textContent=m.conditions;
+  document.getElementById('m-price').innerHTML=`${m.prix} € <span>/ ${m.personnes} pers. min.</span>`;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
+
+function toggleTheme(t){
+  filters.theme=t;
+  document.querySelectorAll('.theme-pills .pill').forEach(b=>b.classList.toggle('active',b.textContent.includes(t==='tous'?'Tous':t)));
+  renderMenus();
+}
+function toggleRegime(r){
+  filters.regime=r;
+  document.querySelectorAll('.regime-pill').forEach(b=>b.classList.toggle('active',b.textContent.trim().includes(r==='tous'?'Tous':r)));
+  renderMenus();
+}
+function togglePersons(n){
+  filters.minPersons=n;
+  document.querySelectorAll('.person-btn').forEach(b=>b.classList.toggle('active',parseInt(b.textContent)===n||(b.textContent==='Tous'&&n===0)));
+  renderMenus();
+}
+function updateFilters(){
+  filters.maxPrice=parseInt(document.getElementById('max-price').value);
+  document.getElementById('max-price-val').textContent=filters.maxPrice+' €';
+  renderMenus();
+}
+function sortMenus(v){sortMode=v;renderMenus();}
+function resetFilters(){
+  filters={theme:'tous',regime:'tous',maxPrice:300,minPersons:0};
+  document.getElementById('max-price').value=300;
+  document.getElementById('max-price-val').textContent='300 €';
+  document.querySelectorAll('.pill').forEach((b,i)=>b.classList.toggle('active',i===0));
+  document.querySelectorAll('.regime-pill').forEach((b,i)=>b.classList.toggle('active',i===0));
+  document.querySelectorAll('.person-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+  sortMode='default';
+  renderMenus();
+}
+
+renderMenus();
+</script>

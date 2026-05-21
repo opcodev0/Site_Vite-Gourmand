@@ -1,0 +1,471 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --vg-cream:#FAF8F3;--vg-dark:#1C1810;--vg-gold:#B8860B;--vg-gold-light:#D4A520;
+  --vg-warm:#F5EFE0;--vg-muted:#7A6E5A;--vg-border:#E8DFC8;--vg-error:#A32D2D;
+  --vg-error-bg:#FCEBEB;--vg-success-bg:#EAF3DE;--vg-success:#3B6D11;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--vg-cream);color:var(--vg-dark);}
+
+nav{background:var(--vg-dark);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:64px;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Playfair Display',serif;color:#FAF8F3;font-size:1.25rem;letter-spacing:0.04em;}
+.nav-logo span{color:var(--vg-gold-light);}
+.nav-back{color:#6B6050;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px;cursor:pointer;border:none;background:none;}
+.nav-back:hover{color:#C8BFA8;}
+
+/* STEPPER */
+.stepper-bar{background:var(--vg-dark);padding:0 2.5rem 1.5rem;display:flex;align-items:center;gap:0;}
+.step{display:flex;align-items:center;gap:0.6rem;}
+.step-num{width:28px;height:28px;border-radius:50%;border:1.5px solid #3A3020;display:flex;align-items:center;justify-content:center;font-size:0.78rem;color:#4A4035;font-weight:500;transition:all 0.3s;flex-shrink:0;}
+.step.active .step-num{background:var(--vg-gold);border-color:var(--vg-gold);color:var(--vg-dark);}
+.step.done .step-num{background:#2A2218;border-color:#3A3020;color:var(--vg-gold);}
+.step-label{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:#4A4035;transition:color 0.3s;}
+.step.active .step-label{color:#FAF8F3;}
+.step.done .step-label{color:#6B6050;}
+.step-line{flex:1;height:1px;background:#2A2218;min-width:24px;}
+
+/* LAYOUT */
+.page-layout{display:grid;grid-template-columns:1fr 360px;gap:0;min-height:calc(100vh - 64px - 80px);}
+
+/* FORM AREA */
+.form-area{padding:2.5rem;}
+.step-panel{display:none;}
+.step-panel.active{display:block;}
+.step-title{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--vg-dark);margin-bottom:0.4rem;}
+.step-sub{font-size:0.85rem;color:var(--vg-muted);margin-bottom:2rem;line-height:1.6;}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.field{margin-bottom:0;}
+.field.full{grid-column:1/-1;}
+.field label{display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--vg-muted);margin-bottom:6px;}
+.field input,.field select,.field textarea{width:100%;padding:10px 14px;border:1px solid var(--vg-border);background:#fff;font-family:'DM Sans',sans-serif;font-size:0.875rem;color:var(--vg-dark);outline:none;transition:border-color 0.2s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--vg-gold);}
+.field input[readonly]{background:var(--vg-warm);color:var(--vg-muted);cursor:not-allowed;}
+.field textarea{resize:vertical;min-height:80px;}
+.field-hint{font-size:0.73rem;color:var(--vg-muted);margin-top:4px;display:flex;align-items:center;gap:4px;}
+.field-hint i{font-size:13px;color:var(--vg-gold);}
+
+.section-sep{border:none;border-top:1px solid var(--vg-border);margin:1.75rem 0;}
+
+/* LIVRAISON NOTICE */
+.livraison-notice{background:var(--vg-warm);border:1px solid var(--vg-border);border-left:3px solid var(--vg-gold);padding:0.9rem 1rem;margin:1rem 0;font-size:0.82rem;color:var(--vg-muted);display:flex;gap:0.6rem;align-items:flex-start;line-height:1.55;}
+.livraison-notice i{color:var(--vg-gold);font-size:16px;margin-top:1px;flex-shrink:0;}
+.livraison-notice strong{color:var(--vg-dark);}
+
+/* MENU SELECTOR */
+.menu-select-cards{display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem;}
+.menu-select-card{border:1.5px solid var(--vg-border);padding:1rem 1.25rem;cursor:pointer;transition:all 0.2s;display:flex;justify-content:space-between;align-items:center;}
+.menu-select-card:hover{border-color:var(--vg-gold);}
+.menu-select-card.selected{border-color:var(--vg-dark);background:var(--vg-warm);}
+.menu-select-card.selected .menu-radio{background:var(--vg-dark);}
+.menu-card-info{}
+.menu-card-name{font-family:'Playfair Display',serif;font-size:1rem;color:var(--vg-dark);margin-bottom:2px;}
+.menu-card-meta{font-size:0.78rem;color:var(--vg-muted);}
+.menu-radio{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--vg-border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.menu-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:#FAF8F3;display:none;}
+.menu-select-card.selected .menu-radio::after{display:block;}
+
+/* PERSONS COUNTER */
+.persons-counter{display:flex;align-items:center;gap:1rem;margin:1rem 0;}
+.counter-btn{width:40px;height:40px;border:1px solid var(--vg-border);background:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--vg-dark);transition:all 0.2s;}
+.counter-btn:hover{border-color:var(--vg-gold);}
+.counter-val{font-family:'Playfair Display',serif;font-size:2rem;color:var(--vg-dark);min-width:48px;text-align:center;}
+.counter-label{font-size:0.8rem;color:var(--vg-muted);}
+.reduction-badge{background:var(--vg-success-bg);border:1px solid #C0DD97;color:var(--vg-success);font-size:0.78rem;padding:4px 12px;display:inline-flex;align-items:center;gap:5px;margin-top:0.5rem;}
+
+/* CONDITIONS BOX */
+.conditions-warning{background:#FAEEDA;border:1px solid #FAC775;border-left:3px solid var(--vg-gold);padding:1rem;margin:1rem 0;}
+.conditions-warning strong{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:#633806;display:flex;align-items:center;gap:6px;margin-bottom:0.5rem;}
+.conditions-warning p{font-size:0.82rem;color:#854F0B;line-height:1.6;}
+.checkbox-row{display:flex;align-items:flex-start;gap:0.6rem;margin-top:1rem;}
+.checkbox-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--vg-dark);margin-top:2px;flex-shrink:0;}
+.checkbox-row label{font-size:0.8rem;color:var(--vg-muted);line-height:1.5;cursor:pointer;}
+
+/* STEP NAV */
+.step-nav{display:flex;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--vg-border);}
+.btn-prev{background:none;border:1px solid var(--vg-border);padding:11px 24px;font-family:'DM Sans',sans-serif;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--vg-muted);cursor:pointer;transition:all 0.2s;}
+.btn-prev:hover{border-color:var(--vg-dark);color:var(--vg-dark);}
+.btn-next{background:var(--vg-dark);border:none;padding:11px 28px;font-family:'DM Sans',sans-serif;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:#FAF8F3;cursor:pointer;transition:background 0.2s;}
+.btn-next:hover{background:#2A2218;}
+.btn-confirm{background:var(--vg-gold);border:none;padding:12px 32px;font-family:'DM Sans',sans-serif;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--vg-dark);font-weight:500;cursor:pointer;}
+
+/* SIDEBAR RECAP */
+.sidebar-recap{background:var(--vg-dark);padding:2rem 1.75rem;position:sticky;top:64px;height:fit-content;}
+.recap-title{font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:1.5rem;}
+.recap-menu{font-family:'Playfair Display',serif;font-size:1.1rem;color:#FAF8F3;margin-bottom:0.25rem;}
+.recap-meta{font-size:0.8rem;color:#6B6050;margin-bottom:1.5rem;}
+.recap-line{display:flex;justify-content:space-between;font-size:0.83rem;padding:0.5rem 0;border-bottom:1px solid #2A2218;}
+.recap-line:last-of-type{border-bottom:none;}
+.recap-label{color:#6B6050;}
+.recap-val{color:#C8BFA8;}
+.recap-total-bar{border-top:1px solid #3A3020;margin-top:1rem;padding-top:1rem;}
+.recap-total-label{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:#4A4035;margin-bottom:0.25rem;}
+.recap-total-val{font-family:'Playfair Display',serif;font-size:2rem;color:#FAF8F3;}
+.recap-note{font-size:0.72rem;color:#4A4035;margin-top:0.5rem;line-height:1.5;}
+.recap-reduction{background:#1A2810;border:1px solid #2D4A2D;padding:0.6rem 0.75rem;margin:0.75rem 0;font-size:0.78rem;color:#C0DD97;display:none;align-items:center;gap:6px;}
+
+/* SUCCESS */
+.success-panel{display:none;text-align:center;padding:4rem 2rem;}
+.success-icon{width:72px;height:72px;border-radius:50%;background:var(--vg-success-bg);border:2px solid #C0DD97;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:32px;color:var(--vg-success);}
+.success-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--vg-dark);margin-bottom:0.75rem;}
+.success-sub{font-size:0.9rem;color:var(--vg-muted);line-height:1.7;max-width:420px;margin:0 auto 2rem;}
+.btn-home{background:var(--vg-dark);color:#FAF8F3;padding:12px 32px;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;border:none;cursor:pointer;}
+</style>
+
+<h2 class="sr-only">Passer commande — Vite &amp; Gourmand</h2>
+
+<nav>
+  <div class="nav-logo">Vite &amp; <span>Gourmand</span></div>
+  <button class="nav-back" onclick="history.back()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Nos menus</button>
+</nav>
+
+<div class="stepper-bar">
+  <div class="step active" id="s1">
+    <div class="step-num">1</div>
+    <div class="step-label">Prestation</div>
+  </div>
+  <div class="step-line"></div>
+  <div class="step" id="s2">
+    <div class="step-num">2</div>
+    <div class="step-label">Menu & personnes</div>
+  </div>
+  <div class="step-line"></div>
+  <div class="step" id="s3">
+    <div class="step-num">3</div>
+    <div class="step-label">Récapitulatif</div>
+  </div>
+</div>
+
+<div class="page-layout">
+  <div class="form-area">
+
+    <!-- STEP 1 -->
+    <div class="step-panel active" id="panel1">
+      <h1 class="step-title">Informations de la prestation</h1>
+      <p class="step-sub">Renseignez vos coordonnées et les détails de votre événement. Les champs marqués sont pré-remplis depuis votre compte.</p>
+
+      <div class="form-grid">
+        <div class="field">
+          <label>Prénom</label>
+          <input type="text" id="f-prenom" value="Marie" readonly>
+        </div>
+        <div class="field">
+          <label>Nom</label>
+          <input type="text" id="f-nom" value="Dupont" readonly>
+        </div>
+        <div class="field full">
+          <label>Adresse mail</label>
+          <input type="email" id="f-email" value="marie.dupont@mail.fr" readonly>
+          <p class="field-hint"><i class="ti ti-lock" aria-hidden="true"></i> Pré-rempli depuis votre compte</p>
+        </div>
+        <div class="field full">
+          <label>Téléphone (GSM)</label>
+          <input type="tel" id="f-gsm" value="06 12 34 56 78" readonly>
+          <p class="field-hint"><i class="ti ti-lock" aria-hidden="true"></i> Pré-rempli depuis votre compte</p>
+        </div>
+      </div>
+
+      <hr class="section-sep">
+
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--vg-dark);margin-bottom:1.25rem;">Détails de la livraison</h2>
+
+      <div class="form-grid">
+        <div class="field full">
+          <label>Adresse de la prestation</label>
+          <input type="text" id="f-adresse" placeholder="12 allée des Pins, 33000 Bordeaux" oninput="calcLivraison()">
+        </div>
+        <div class="field">
+          <label>Date de la prestation</label>
+          <input type="date" id="f-date">
+        </div>
+        <div class="field">
+          <label>Heure souhaitée</label>
+          <input type="time" id="f-heure" value="12:00">
+        </div>
+        <div class="field full">
+          <label>Précisions sur le lieu</label>
+          <textarea id="f-lieu" placeholder="Salle des fêtes, maison privée, entreprise — bâtiment B, code d'accès…"></textarea>
+        </div>
+      </div>
+
+      <div class="livraison-notice" id="livraison-notice">
+        <i class="ti ti-map-pin" aria-hidden="true"></i>
+        <div>
+          <strong>Livraison à Bordeaux — offerte</strong><br>
+          La livraison dans Bordeaux est incluse (5 € de base). Hors Bordeaux, un supplément de <strong>0,59 € / km</strong> sera appliqué automatiquement.
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <span></span>
+        <button class="btn-next" onclick="goStep(2)">Étape suivante <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-panel" id="panel2">
+      <h1 class="step-title">Choix du menu & convives</h1>
+      <p class="step-sub">Sélectionnez le menu souhaité et indiquez le nombre de personnes. Une réduction de 10 % est appliquée à partir de 5 personnes supplémentaires au minimum requis.</p>
+
+      <div class="menu-select-cards" id="menu-cards"></div>
+
+      <hr class="section-sep">
+
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--vg-dark);margin-bottom:0.5rem;">Nombre de personnes</h2>
+      <p style="font-size:0.82rem;color:var(--vg-muted);margin-bottom:1rem;" id="persons-hint">Minimum requis : <strong id="min-persons-label">—</strong> personnes pour ce menu.</p>
+
+      <div class="persons-counter">
+        <button class="counter-btn" onclick="changePersons(-1)" aria-label="Réduire"><i class="ti ti-minus" aria-hidden="true"></i></button>
+        <div class="counter-val" id="persons-val">—</div>
+        <button class="counter-btn" onclick="changePersons(1)" aria-label="Augmenter"><i class="ti ti-plus" aria-hidden="true"></i></button>
+        <div class="counter-label" id="counter-label">personnes</div>
+      </div>
+      <div class="reduction-badge" id="reduction-badge"><i class="ti ti-discount" aria-hidden="true"></i> Réduction 10 % appliquée !</div>
+
+      <hr class="section-sep">
+
+      <div class="conditions-warning" id="conditions-box" style="display:none;">
+        <strong><i class="ti ti-alert-triangle" aria-hidden="true"></i> Conditions importantes à lire</strong>
+        <p id="conditions-text"></p>
+      </div>
+      <div class="checkbox-row" id="conditions-check-row" style="display:none;">
+        <input type="checkbox" id="cond-check">
+        <label for="cond-check">J'ai pris connaissance des conditions de ce menu et je les accepte.</label>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-prev" onclick="goStep(1)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Retour</button>
+        <button class="btn-next" onclick="goStep(3)">Récapitulatif <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-panel" id="panel3">
+      <h1 class="step-title">Récapitulatif de commande</h1>
+      <p class="step-sub">Vérifiez les informations de votre commande avant de valider. Un mail de confirmation vous sera envoyé automatiquement.</p>
+
+      <div id="recap-detail" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
+
+      <hr class="section-sep">
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="cgv-check">
+        <label for="cgv-check">J'accepte les <a href="#" style="color:var(--vg-gold);">conditions générales de vente</a>, notamment les dispositions relatives au matériel prêté et aux délais de commande.</label>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-prev" onclick="goStep(2)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Modifier</button>
+        <button class="btn-confirm" onclick="confirmOrder()"><i class="ti ti-check" aria-hidden="true"></i> Confirmer la commande</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-panel" id="success-panel">
+      <div class="success-icon"><i class="ti ti-check" aria-hidden="true"></i></div>
+      <div class="success-title">Commande confirmée !</div>
+      <p class="success-sub">Merci <strong id="success-name"></strong> ! Votre commande a bien été enregistrée. Un mail de confirmation vous a été envoyé à <strong id="success-email"></strong>. Vous pouvez suivre votre commande depuis votre espace personnel.</p>
+      <button class="btn-home">Voir mes commandes <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <!-- SIDEBAR RECAP -->
+  <aside class="sidebar-recap">
+    <div class="recap-title">Votre commande</div>
+    <div class="recap-menu" id="rc-menu">Aucun menu sélectionné</div>
+    <div class="recap-meta" id="rc-meta">—</div>
+
+    <div class="recap-line"><span class="recap-label">Date</span><span class="recap-val" id="rc-date">—</span></div>
+    <div class="recap-line"><span class="recap-label">Heure</span><span class="recap-val" id="rc-heure">—</span></div>
+    <div class="recap-line"><span class="recap-label">Adresse</span><span class="recap-val" id="rc-adresse" style="text-align:right;max-width:160px;">—</span></div>
+    <div class="recap-line"><span class="recap-label">Personnes</span><span class="recap-val" id="rc-persons">—</span></div>
+    <div class="recap-line"><span class="recap-label">Prix menu</span><span class="recap-val" id="rc-prix-menu">—</span></div>
+    <div class="recap-line"><span class="recap-label">Livraison</span><span class="recap-val" id="rc-livraison">5,00 €</span></div>
+
+    <div class="recap-reduction" id="rc-reduction"><i class="ti ti-discount" aria-hidden="true"></i> Réduction 10 % : <strong id="rc-reduction-val"></strong></div>
+
+    <div class="recap-total-bar">
+      <div class="recap-total-label">Total estimé</div>
+      <div class="recap-total-val" id="rc-total">—</div>
+      <div class="recap-note">Prix pour le nombre de personnes minimum. Le total est mis à jour selon le nombre de convives.</div>
+    </div>
+  </aside>
+</div>
+
+<script>
+const MENUS=[
+  {id:1,titre:"Menu Festif de Noël",theme:"Noël",regime:"Classique",prix:185,personnes:8,conditions:"Commande requise minimum 7 jours avant la prestation. Conservation entre 0°C et 4°C. Matériel de service fourni et à restituer sous 10 jours ouvrés."},
+  {id:2,titre:"Menu Pâques Tradition",theme:"Pâques",regime:"Classique",prix:95,personnes:6,conditions:"Commande minimum 5 jours avant la prestation. Menu disponible uniquement en période pascale (mars–avril)."},
+  {id:3,titre:"Formule Classique Conviviale",theme:"Classique",regime:"Classique",prix:65,personnes:10,conditions:"Commande requise minimum 3 jours avant la prestation. Livraison dans un rayon de 30 km autour de Bordeaux."},
+  {id:4,titre:"Banquet Végétarien Printemps",theme:"Événement",regime:"Végétarien",prix:72,personnes:8,conditions:"Commande minimum 4 jours avant la prestation. Tous nos produits végétariens sont certifiés sans viande ni poisson."},
+  {id:5,titre:"Menu Vegan Été",theme:"Classique",regime:"Vegan",prix:58,personnes:5,conditions:"Commande minimum 3 jours avant. Aucun produit d'origine animale. Emballages recyclables fournis."},
+  {id:6,titre:"Gala Prestige Événementiel",theme:"Événement",regime:"Classique",prix:240,personnes:20,conditions:"Commande minimum 14 jours avant l'événement. Matériel haut de gamme fourni et à restituer sous 10 jours ouvrés. Facturation de 600 € en cas de non-restitution (CGV art. 8)."}
+];
+
+let state={selectedMenu:null,persons:0,livraisonKm:0,currentStep:1};
+
+// Pre-select menu 1 (simule "venir depuis la vue détail")
+function init(){
+  const cards=document.getElementById('menu-cards');
+  cards.innerHTML=MENUS.map(m=>`
+    <div class="menu-select-card" id="mc-${m.id}" onclick="selectMenu(${m.id})">
+      <div class="menu-card-info">
+        <div class="menu-card-name">${m.titre}</div>
+        <div class="menu-card-meta">${m.theme} · ${m.regime} · ${m.prix} € / ${m.personnes} pers. min.</div>
+      </div>
+      <div class="menu-radio" id="mr-${m.id}"></div>
+    </div>
+  `).join('');
+  selectMenu(1);
+  updateSidebar();
+}
+
+function selectMenu(id){
+  MENUS.forEach(m=>{
+    document.getElementById('mc-'+m.id).classList.toggle('selected',m.id===id);
+    document.getElementById('mr-'+m.id).parentElement.querySelector('.menu-radio');
+  });
+  state.selectedMenu=MENUS.find(m=>m.id===id);
+  state.persons=state.selectedMenu.personnes;
+  document.getElementById('min-persons-label').textContent=state.selectedMenu.personnes;
+  document.getElementById('persons-val').textContent=state.persons;
+  document.getElementById('conditions-text').textContent=state.selectedMenu.conditions;
+  document.getElementById('conditions-box').style.display='block';
+  document.getElementById('conditions-check-row').style.display='flex';
+  updateReduction();
+  updateSidebar();
+}
+
+function changePersons(delta){
+  if(!state.selectedMenu)return;
+  const min=state.selectedMenu.personnes;
+  state.persons=Math.max(min,state.persons+delta);
+  document.getElementById('persons-val').textContent=state.persons;
+  updateReduction();
+  updateSidebar();
+}
+
+function updateReduction(){
+  if(!state.selectedMenu)return;
+  const hasReduction=state.persons>=state.selectedMenu.personnes+5;
+  document.getElementById('reduction-badge').style.display=hasReduction?'inline-flex':'none';
+  document.getElementById('rc-reduction').style.display=hasReduction?'flex':'none';
+}
+
+function calcLivraison(){
+  // Simulate: if "bordeaux" in address => 5€, else random km surcharge
+  const addr=(document.getElementById('f-adresse').value||'').toLowerCase();
+  const inBordeaux=addr.includes('bordeaux')||addr.includes('33000')||addr==='';;
+  state.livraisonKm=inBordeaux?0:Math.floor(Math.random()*30)+10;
+  const livraisonCost=5+state.livraisonKm*0.59;
+  const notice=document.getElementById('livraison-notice');
+  if(inBordeaux){
+    notice.innerHTML=`<i class="ti ti-map-pin" aria-hidden="true"></i><div><strong>Livraison à Bordeaux — 5,00 €</strong><br>Livraison incluse dans Bordeaux. Pas de supplément kilométrique.</div>`;
+  } else {
+    notice.innerHTML=`<i class="ti ti-map-pin" aria-hidden="true"></i><div><strong>Livraison hors Bordeaux — ${livraisonCost.toFixed(2)} €</strong><br>Base 5 € + ${state.livraisonKm} km × 0,59 € = <strong>${livraisonCost.toFixed(2)} €</strong> de frais de livraison.</div>`;
+  }
+  updateSidebar();
+}
+
+function getLivraisonCost(){return 5+state.livraisonKm*0.59;}
+
+function getMenuPrice(){
+  if(!state.selectedMenu)return 0;
+  const m=state.selectedMenu;
+  const ratio=state.persons/m.personnes;
+  let price=m.prix*ratio;
+  if(state.persons>=m.personnes+5)price*=0.9;
+  return price;
+}
+
+function updateSidebar(){
+  const m=state.selectedMenu;
+  document.getElementById('rc-menu').textContent=m?m.titre:'Aucun menu sélectionné';
+  document.getElementById('rc-meta').textContent=m?`${m.theme} · ${m.regime}`:'—';
+  document.getElementById('rc-date').textContent=document.getElementById('f-date').value||'—';
+  document.getElementById('rc-heure').textContent=document.getElementById('f-heure').value||'—';
+  const addr=document.getElementById('f-adresse').value;
+  document.getElementById('rc-adresse').textContent=addr||'—';
+  document.getElementById('rc-persons').textContent=m?state.persons+' pers.':'—';
+  const menuPrice=getMenuPrice();
+  const livraisonCost=getLivraisonCost();
+  const total=menuPrice+livraisonCost;
+  document.getElementById('rc-prix-menu').textContent=m?menuPrice.toFixed(2)+' €':'—';
+  document.getElementById('rc-livraison').textContent=livraisonCost.toFixed(2)+' €';
+  document.getElementById('rc-total').textContent=m?total.toFixed(2)+' €':'—';
+  if(m&&state.persons>=m.personnes+5){
+    const saved=(m.prix*(state.persons/m.personnes)*0.1);
+    document.getElementById('rc-reduction-val').textContent='-'+saved.toFixed(2)+' €';
+  }
+}
+
+function goStep(n){
+  if(n===3){buildRecap();}
+  [1,2,3].forEach(i=>{
+    document.getElementById('panel'+i).classList.toggle('active',i===n);
+    const s=document.getElementById('s'+i);
+    s.classList.remove('active','done');
+    if(i===n)s.classList.add('active');
+    else if(i<n)s.classList.add('done');
+  });
+  state.currentStep=n;
+}
+
+function buildRecap(){
+  const m=state.selectedMenu;
+  if(!m)return;
+  const menuPrice=getMenuPrice();
+  const livraisonCost=getLivraisonCost();
+  const total=menuPrice+livraisonCost;
+  const hasRed=state.persons>=m.personnes+5;
+  document.getElementById('recap-detail').innerHTML=`
+    <div style="background:#fff;border:1px solid var(--vg-border);padding:1.25rem;">
+      <div style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.75rem;">Client</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;font-size:0.85rem;">
+        <div><span style="color:var(--vg-muted);">Nom :</span> <strong>Marie Dupont</strong></div>
+        <div><span style="color:var(--vg-muted);">Mail :</span> marie.dupont@mail.fr</div>
+        <div><span style="color:var(--vg-muted);">GSM :</span> 06 12 34 56 78</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--vg-border);padding:1.25rem;">
+      <div style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.75rem;">Prestation</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;font-size:0.85rem;">
+        <div><span style="color:var(--vg-muted);">Date :</span> <strong>${document.getElementById('f-date').value||'Non renseignée'}</strong></div>
+        <div><span style="color:var(--vg-muted);">Heure :</span> <strong>${document.getElementById('f-heure').value}</strong></div>
+        <div style="grid-column:1/-1;"><span style="color:var(--vg-muted);">Adresse :</span> ${document.getElementById('f-adresse').value||'Non renseignée'}</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--vg-border);padding:1.25rem;">
+      <div style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.75rem;">Menu commandé</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--vg-dark);margin-bottom:0.25rem;">${m.titre}</div>
+      <div style="font-size:0.8rem;color:var(--vg-muted);">${m.theme} · ${m.regime} · ${state.persons} personnes</div>
+    </div>
+    <div style="background:var(--vg-warm);border:1px solid var(--vg-border);padding:1.25rem;">
+      <div style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.75rem;">Détail du prix</div>
+      <div style="display:flex;flex-direction:column;gap:0.4rem;font-size:0.85rem;">
+        <div style="display:flex;justify-content:space-between;"><span style="color:var(--vg-muted);">Prix menu (${state.persons} pers.)</span><span>${(m.prix*(state.persons/m.personnes)).toFixed(2)} €</span></div>
+        ${hasRed?`<div style="display:flex;justify-content:space-between;color:var(--vg-success)"><span>Réduction 10 %</span><span>-${(m.prix*(state.persons/m.personnes)*0.1).toFixed(2)} €</span></div>`:''}
+        <div style="display:flex;justify-content:space-between;"><span style="color:var(--vg-muted);">Livraison</span><span>${livraisonCost.toFixed(2)} €</span></div>
+        <div style="display:flex;justify-content:space-between;font-weight:500;font-size:0.95rem;border-top:1px solid var(--vg-border);padding-top:0.5rem;margin-top:0.25rem;"><span>Total</span><span style="font-family:'Playfair Display',serif;font-size:1.2rem;">${total.toFixed(2)} €</span></div>
+      </div>
+    </div>
+    <div style="background:#FAEEDA;border:1px solid #FAC775;border-left:3px solid var(--vg-gold);padding:1rem;">
+      <strong style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:#633806;display:flex;align-items:center;gap:6px;margin-bottom:0.5rem;"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Rappel des conditions</strong>
+      <p style="font-size:0.82rem;color:#854F0B;line-height:1.6;">${m.conditions}</p>
+    </div>
+  `;
+}
+
+function confirmOrder(){
+  if(!document.getElementById('cgv-check').checked){alert('Veuillez accepter les conditions générales de vente.');return;}
+  [1,2,3].forEach(i=>{document.getElementById('panel'+i).classList.remove('active');document.getElementById('s'+i).classList.add('done');});
+  document.getElementById('success-panel').style.display='block';
+  document.getElementById('success-name').textContent='Marie';
+  document.getElementById('success-email').textContent='marie.dupont@mail.fr';
+}
+
+// Live sidebar updates
+document.addEventListener('input',updateSidebar);
+init();
+</script>

@@ -1,0 +1,426 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --vg-cream:#FAF8F3;--vg-dark:#1C1810;--vg-gold:#B8860B;--vg-gold-light:#D4A520;
+  --vg-warm:#F5EFE0;--vg-muted:#7A6E5A;--vg-border:#E8DFC8;
+  --vg-error:#A32D2D;--vg-error-bg:#FCEBEB;
+  --vg-success:#3B6D11;--vg-success-bg:#EAF3DE;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--vg-cream);color:var(--vg-dark);}
+
+nav{background:var(--vg-dark);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:64px;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Playfair Display',serif;color:#FAF8F3;font-size:1.25rem;letter-spacing:0.04em;}
+.nav-logo span{color:var(--vg-gold-light);}
+.nav-right{display:flex;align-items:center;gap:1.5rem;}
+.nav-user{font-size:0.8rem;color:#C8BFA8;display:flex;align-items:center;gap:8px;}
+.nav-avatar{width:32px;height:32px;border-radius:50%;background:var(--vg-gold);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:500;color:var(--vg-dark);}
+.nav-logout{color:#6B6050;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;background:none;border:none;cursor:pointer;}
+.nav-logout:hover{color:#C8BFA8;}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 64px);}
+
+/* SIDEBAR NAV */
+.side-nav{background:var(--vg-dark);padding:2rem 0;border-right:1px solid #2A2218;}
+.side-user{padding:0 1.5rem 1.5rem;border-bottom:1px solid #2A2218;margin-bottom:1rem;}
+.side-avatar{width:48px;height:48px;border-radius:50%;background:var(--vg-gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--vg-dark);margin-bottom:0.75rem;}
+.side-name{font-family:'Playfair Display',serif;font-size:1rem;color:#FAF8F3;margin-bottom:2px;}
+.side-role{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--vg-gold);background:#2A2218;padding:2px 8px;display:inline-block;}
+.side-link{display:flex;align-items:center;gap:10px;padding:0.65rem 1.5rem;font-size:0.82rem;color:#6B6050;cursor:pointer;transition:all 0.15s;border-left:2px solid transparent;}
+.side-link i{font-size:16px;}
+.side-link:hover{color:#C8BFA8;background:#1A140C;}
+.side-link.active{color:#FAF8F3;border-left-color:var(--vg-gold);background:#1A140C;}
+
+/* MAIN */
+.main{padding:2.5rem;background:var(--vg-cream);}
+.page-hidden{display:none;}
+
+/* PAGE HEADER */
+.page-head{margin-bottom:2rem;}
+.page-label{font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.4rem;}
+.page-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--vg-dark);}
+
+/* STAT CARDS */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+.stat-card{background:var(--vg-warm);border:1px solid var(--vg-border);padding:1.25rem;}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--vg-dark);}
+.stat-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--vg-muted);margin-top:4px;}
+
+/* STATUS BADGES */
+.badge{font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;padding:3px 10px;font-weight:500;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;}
+.b-attente{background:#F1EFE8;color:#5F5E5A;}
+.b-accepte{background:#E6F1FB;color:#185FA5;}
+.b-preparation{background:#FAEEDA;color:#854F0B;}
+.b-livraison{background:#E1F5EE;color:#0F6E56;}
+.b-livre{background:#EAF3DE;color:#3B6D11;}
+.b-materiel{background:#FBEAF0;color:#993556;}
+.b-terminee{background:#1C1810;color:var(--vg-gold-light);}
+.b-annulee{background:var(--vg-error-bg);color:var(--vg-error);}
+
+/* COMMANDES LIST */
+.commandes-list{display:flex;flex-direction:column;gap:1rem;}
+.cmd-card{background:#fff;border:1px solid var(--vg-border);transition:border-color 0.2s;}
+.cmd-card:hover{border-color:var(--vg-gold);}
+.cmd-header{padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-bottom:1px solid transparent;}
+.cmd-header.open{border-bottom-color:var(--vg-border);}
+.cmd-title-area{}
+.cmd-ref{font-size:0.7rem;color:var(--vg-muted);letter-spacing:0.08em;margin-bottom:2px;}
+.cmd-name{font-family:'Playfair Display',serif;font-size:1rem;color:var(--vg-dark);}
+.cmd-header-right{display:flex;align-items:center;gap:1rem;}
+.cmd-price{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--vg-dark);}
+.cmd-chevron{color:var(--vg-muted);font-size:18px;transition:transform 0.2s;}
+.cmd-chevron.open{transform:rotate(180deg);}
+.cmd-body{display:none;padding:1.25rem;}
+.cmd-body.open{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+
+.cmd-info-block{display:flex;flex-direction:column;gap:0.5rem;}
+.cmd-info-row{display:flex;gap:0.5rem;font-size:0.83rem;}
+.cmd-info-label{color:var(--vg-muted);min-width:90px;flex-shrink:0;}
+.cmd-info-val{color:var(--vg-dark);}
+
+/* SUIVI */
+.suivi-timeline{display:flex;flex-direction:column;gap:0;}
+.suivi-step{display:flex;gap:0.75rem;position:relative;}
+.suivi-step::before{content:'';position:absolute;left:9px;top:22px;bottom:-8px;width:1px;background:var(--vg-border);}
+.suivi-step:last-child::before{display:none;}
+.suivi-dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--vg-border);background:#fff;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:10px;}
+.suivi-dot.done{background:var(--vg-dark);border-color:var(--vg-dark);color:var(--vg-gold);}
+.suivi-dot.current{background:var(--vg-gold);border-color:var(--vg-gold);color:var(--vg-dark);}
+.suivi-content{padding-bottom:1rem;}
+.suivi-label{font-size:0.82rem;font-weight:500;color:var(--vg-dark);}
+.suivi-date{font-size:0.73rem;color:var(--vg-muted);margin-top:2px;}
+
+/* CMD ACTIONS */
+.cmd-actions{display:flex;gap:0.75rem;margin-top:1rem;grid-column:1/-1;padding-top:1rem;border-top:1px solid var(--vg-border);}
+.btn-sm{padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;border:1px solid var(--vg-border);background:#fff;color:var(--vg-muted);transition:all 0.2s;}
+.btn-sm:hover{border-color:var(--vg-dark);color:var(--vg-dark);}
+.btn-sm.danger{border-color:#F7C1C1;color:var(--vg-error);background:var(--vg-error-bg);}
+.btn-sm.danger:hover{background:#F7C1C1;}
+.btn-sm.primary{background:var(--vg-dark);color:#FAF8F3;border-color:var(--vg-dark);}
+
+/* AVIS */
+.avis-form{background:var(--vg-warm);border:1px solid var(--vg-border);padding:1.25rem;margin-top:0.75rem;grid-column:1/-1;}
+.stars-row{display:flex;gap:6px;margin-bottom:1rem;}
+.star-btn{font-size:22px;background:none;border:none;cursor:pointer;color:var(--vg-border);transition:color 0.15s;padding:0;}
+.star-btn.lit{color:var(--vg-gold);}
+.avis-textarea{width:100%;border:1px solid var(--vg-border);padding:10px;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--vg-dark);resize:vertical;min-height:70px;outline:none;background:#fff;}
+.avis-textarea:focus{border-color:var(--vg-gold);}
+.avis-sent{background:var(--vg-success-bg);border:1px solid #C0DD97;color:var(--vg-success);padding:0.75rem 1rem;font-size:0.82rem;display:flex;align-items:center;gap:6px;display:none;}
+
+/* PROFIL */
+.profil-card{background:#fff;border:1px solid var(--vg-border);padding:2rem;max-width:560px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field.full{grid-column:1/-1;}
+.field label{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--vg-muted);}
+.field input{padding:9px 12px;border:1px solid var(--vg-border);font-family:'DM Sans',sans-serif;font-size:0.875rem;color:var(--vg-dark);outline:none;transition:border-color 0.2s;}
+.field input:focus{border-color:var(--vg-gold);}
+.btn-save{background:var(--vg-dark);color:#FAF8F3;padding:10px 24px;font-family:'DM Sans',sans-serif;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;margin-top:0.5rem;}
+.save-confirm{font-size:0.8rem;color:var(--vg-success);display:none;align-items:center;gap:6px;margin-top:0.5rem;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(20,16,8,0.85);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--vg-cream);width:100%;max-width:440px;padding:2rem;position:relative;}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--vg-dark);margin-bottom:0.5rem;}
+.modal-sub{font-size:0.84rem;color:var(--vg-muted);line-height:1.6;margin-bottom:1.5rem;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;color:var(--vg-muted);font-size:20px;}
+.btn-confirm-danger{background:var(--vg-error);color:#fff;padding:10px 24px;font-family:'DM Sans',sans-serif;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;}
+.btn-cancel{background:none;border:1px solid var(--vg-border);padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--vg-muted);cursor:pointer;}
+</style>
+
+<h2 class="sr-only">Espace utilisateur — Vite &amp; Gourmand</h2>
+
+<nav>
+  <div class="nav-logo">Vite &amp; <span>Gourmand</span></div>
+  <div class="nav-right">
+    <div class="nav-user"><div class="nav-avatar">MD</div> Marie Dupont</div>
+    <button class="nav-logout"><i class="ti ti-logout" aria-hidden="true"></i> Déconnexion</button>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="side-nav">
+    <div class="side-user">
+      <div class="side-avatar">MD</div>
+      <div class="side-name">Marie Dupont</div>
+      <span class="side-role">Utilisateur</span>
+    </div>
+    <div class="side-link active" onclick="showPage('commandes')"><i class="ti ti-shopping-bag" aria-hidden="true"></i> Mes commandes</div>
+    <div class="side-link" onclick="showPage('profil')"><i class="ti ti-user" aria-hidden="true"></i> Mon profil</div>
+    <div class="side-link" onclick="showPage('commandes')"><i class="ti ti-home" aria-hidden="true"></i> Accueil du site</div>
+  </aside>
+
+  <main class="main">
+
+    <!-- PAGE COMMANDES -->
+    <div id="page-commandes">
+      <div class="page-head">
+        <p class="page-label">Espace personnel</p>
+        <h1 class="page-title">Mes commandes</h1>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Commandes totales</div></div>
+        <div class="stat-card"><div class="stat-num">1</div><div class="stat-label">En cours</div></div>
+        <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Terminées</div></div>
+      </div>
+
+      <div class="commandes-list" id="commandes-list"></div>
+    </div>
+
+    <!-- PAGE PROFIL -->
+    <div id="page-profil" class="page-hidden">
+      <div class="page-head">
+        <p class="page-label">Espace personnel</p>
+        <h1 class="page-title">Mon profil</h1>
+      </div>
+      <div class="profil-card">
+        <div class="form-grid">
+          <div class="field"><label>Prénom</label><input type="text" value="Marie"></div>
+          <div class="field"><label>Nom</label><input type="text" value="Dupont"></div>
+          <div class="field full"><label>Adresse mail</label><input type="email" value="marie.dupont@mail.fr"></div>
+          <div class="field full"><label>Téléphone (GSM)</label><input type="tel" value="06 12 34 56 78"></div>
+          <div class="field full"><label>Adresse postale</label><input type="text" value="12 rue des Pins, 33000 Bordeaux"></div>
+        </div>
+        <div style="border-top:1px solid var(--vg-border);margin-top:1.5rem;padding-top:1.5rem;">
+          <div style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:1rem;">Changer le mot de passe</div>
+          <div class="form-grid">
+            <div class="field full"><label>Mot de passe actuel</label><input type="password" placeholder="••••••••••"></div>
+            <div class="field"><label>Nouveau mot de passe</label><input type="password" placeholder="••••••••••"></div>
+            <div class="field"><label>Confirmer</label><input type="password" placeholder="••••••••••"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;margin-top:1rem;">
+          <button class="btn-save" onclick="saveProfil()">Enregistrer les modifications</button>
+          <div class="save-confirm" id="save-confirm"><i class="ti ti-check" aria-hidden="true"></i> Modifications enregistrées</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL ANNULATION -->
+<div class="modal-overlay" id="modal-annul">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-annul')" aria-label="Fermer"><i class="ti ti-x" aria-hidden="true"></i></button>
+    <div class="modal-title">Annuler la commande</div>
+    <p class="modal-sub">Êtes-vous sûr de vouloir annuler cette commande ? Cette action est irréversible. Un employé pourra vous contacter pour confirmer l'annulation.</p>
+    <div style="display:flex;gap:0.75rem;">
+      <button class="btn-cancel" onclick="closeModal('modal-annul')">Retour</button>
+      <button class="btn-confirm-danger" onclick="doAnnul()">Confirmer l'annulation</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL MODIFICATION -->
+<div class="modal-overlay" id="modal-modif">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-modif')" aria-label="Fermer"><i class="ti ti-x" aria-hidden="true"></i></button>
+    <div class="modal-title">Modifier la commande</div>
+    <p class="modal-sub">Vous pouvez modifier la date, l'heure, l'adresse de prestation et le nombre de personnes. Le menu sélectionné ne peut pas être changé.</p>
+    <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem;">
+      <div class="field"><label>Date de la prestation</label><input type="date" id="modif-date"></div>
+      <div class="field"><label>Heure souhaitée</label><input type="time" id="modif-heure" value="12:00"></div>
+      <div class="field"><label>Adresse</label><input type="text" id="modif-adresse" placeholder="12 rue des Pins, 33000 Bordeaux"></div>
+      <div class="field"><label>Nombre de personnes</label><input type="number" id="modif-persons" min="1" value="8"></div>
+    </div>
+    <div style="display:flex;gap:0.75rem;">
+      <button class="btn-cancel" onclick="closeModal('modal-modif')">Annuler</button>
+      <button class="btn-save" onclick="doModif()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const COMMANDES=[
+  {
+    id:'CMD-2024-001',menu:'Menu Festif de Noël',date:'2024-12-24',heure:'19:00',
+    adresse:'12 rue des Pins, 33000 Bordeaux',persons:10,prix:'231.50 €',
+    statut:'terminee',avis:false,
+    suivi:[
+      {label:'Commande reçue',date:'15 déc. 2024 · 10h22',done:true},
+      {label:'Acceptée',date:'15 déc. 2024 · 14h05',done:true},
+      {label:'En préparation',date:'24 déc. 2024 · 09h00',done:true},
+      {label:'En cours de livraison',date:'24 déc. 2024 · 17h30',done:true},
+      {label:'Livrée',date:'24 déc. 2024 · 18h55',done:true},
+      {label:'Terminée',date:'24 déc. 2024 · 19h10',done:true},
+    ]
+  },
+  {
+    id:'CMD-2024-002',menu:'Formule Classique Conviviale',date:'2024-10-12',heure:'13:00',
+    adresse:'Salle des fêtes, 33100 Bordeaux',persons:12,prix:'78.00 €',
+    statut:'terminee',avis:true,avisNote:4,avisTexte:'Très bon repas, service impeccable. Légèrement en retard mais tout était délicieux.',
+    suivi:[
+      {label:'Commande reçue',date:'09 oct. 2024 · 11h00',done:true},
+      {label:'Acceptée',date:'09 oct. 2024 · 15h30',done:true},
+      {label:'En préparation',date:'12 oct. 2024 · 08h00',done:true},
+      {label:'En cours de livraison',date:'12 oct. 2024 · 11h45',done:true},
+      {label:'Livrée',date:'12 oct. 2024 · 13h20',done:true},
+      {label:'Terminée',date:'12 oct. 2024 · 13h35',done:true},
+    ]
+  },
+  {
+    id:'CMD-2025-003',menu:'Banquet Végétarien Printemps',date:'2025-04-20',heure:'12:30',
+    adresse:'8 avenue Gambetta, 33000 Bordeaux',persons:8,prix:'72.00 €',
+    statut:'preparation',avis:false,modifiable:false,annulable:false,
+    suivi:[
+      {label:'Commande reçue',date:'10 avr. 2025 · 09h15',done:true},
+      {label:'Acceptée',date:'10 avr. 2025 · 16h00',done:true},
+      {label:'En préparation',date:'20 avr. 2025 · 07h30',done:true,current:true},
+      {label:'En cours de livraison',date:'',done:false},
+      {label:'Livrée',date:'',done:false},
+      {label:'Terminée',date:'',done:false},
+    ]
+  }
+];
+
+let openCards={};
+let starRatings={};
+let pendingAnnul=null;
+
+function statutBadge(s){
+  const map={
+    attente:['b-attente','ti-clock','En attente'],
+    accepte:['b-accepte','ti-check','Acceptée'],
+    preparation:['b-preparation','ti-chef-hat','En préparation'],
+    livraison:['b-livraison','ti-truck-delivery','En livraison'],
+    livre:['b-livre','ti-package','Livrée'],
+    materiel:['b-materiel','ti-tool','Retour matériel'],
+    terminee:['b-terminee','ti-star','Terminée'],
+    annulee:['b-annulee','ti-x','Annulée'],
+  };
+  const [cls,icon,label]=map[s]||map.attente;
+  return `<span class="badge ${cls}"><i class="ti ti-${icon}" aria-hidden="true"></i>${label}</span>`;
+}
+
+function canModify(cmd){return cmd.modifiable!==false&&(cmd.statut==='attente');}
+function canCancel(cmd){return cmd.annulable!==false&&(cmd.statut==='attente');}
+function canSuivi(cmd){return !['attente'].includes(cmd.statut);}
+function needAvis(cmd){return cmd.statut==='terminee'&&!cmd.avis;}
+
+function renderStars(cmdId,note){
+  return [1,2,3,4,5].map(i=>`<button class="star-btn${(starRatings[cmdId]||note||0)>=i?' lit':''}" onclick="setStar('${cmdId}',${i})" aria-label="${i} étoile${i>1?'s':''}">${(starRatings[cmdId]||note||0)>=i?'★':'☆'}</button>`).join('');
+}
+
+function setStar(cmdId,n){
+  starRatings[cmdId]=n;
+  document.getElementById('stars-'+cmdId).innerHTML=renderStars(cmdId,0);
+}
+
+function renderCommandes(){
+  document.getElementById('commandes-list').innerHTML=COMMANDES.map(cmd=>`
+    <div class="cmd-card" id="card-${cmd.id}">
+      <div class="cmd-header" id="hdr-${cmd.id}" onclick="toggleCard('${cmd.id}')">
+        <div class="cmd-title-area">
+          <div class="cmd-ref">${cmd.id} · ${cmd.date}</div>
+          <div class="cmd-name">${cmd.menu}</div>
+        </div>
+        <div class="cmd-header-right">
+          ${statutBadge(cmd.statut)}
+          <div class="cmd-price">${cmd.prix}</div>
+          <i class="ti ti-chevron-down cmd-chevron" id="chev-${cmd.id}" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="cmd-body" id="body-${cmd.id}">
+        <div class="cmd-info-block">
+          <div style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.5rem;">Détails</div>
+          <div class="cmd-info-row"><span class="cmd-info-label">Menu</span><span class="cmd-info-val">${cmd.menu}</span></div>
+          <div class="cmd-info-row"><span class="cmd-info-label">Date</span><span class="cmd-info-val">${cmd.date} à ${cmd.heure}</span></div>
+          <div class="cmd-info-row"><span class="cmd-info-label">Adresse</span><span class="cmd-info-val">${cmd.adresse}</span></div>
+          <div class="cmd-info-row"><span class="cmd-info-label">Personnes</span><span class="cmd-info-val">${cmd.persons} personnes</span></div>
+          <div class="cmd-info-row"><span class="cmd-info-label">Total</span><span class="cmd-info-val" style="font-family:'Playfair Display',serif;font-size:1rem;">${cmd.prix}</span></div>
+        </div>
+        <div>
+          <div style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.75rem;">Suivi de commande</div>
+          <div class="suivi-timeline">
+            ${cmd.suivi.map((s,i)=>`
+              <div class="suivi-step">
+                <div class="suivi-dot${s.done&&!s.current?' done':s.current?' current':''}">
+                  ${s.done&&!s.current?'<i class="ti ti-check" style="font-size:10px" aria-hidden="true"></i>':s.current?'<i class="ti ti-loader-2" style="font-size:10px" aria-hidden="true"></i>':''}
+                </div>
+                <div class="suivi-content">
+                  <div class="suivi-label" style="color:${s.done||s.current?'var(--vg-dark)':'var(--vg-border)'}">${s.label}</div>
+                  ${s.date?`<div class="suivi-date">${s.date}</div>`:''}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="cmd-actions">
+          ${canModify(cmd)?`<button class="btn-sm" onclick="openModif('${cmd.id}')"><i class="ti ti-edit" aria-hidden="true"></i> Modifier</button>`:''}
+          ${canCancel(cmd)?`<button class="btn-sm danger" onclick="openAnnul('${cmd.id}')"><i class="ti ti-x" aria-hidden="true"></i> Annuler</button>`:''}
+          ${needAvis(cmd)?`<button class="btn-sm primary" onclick="document.getElementById('avis-${cmd.id}').style.display='block'"><i class="ti ti-star" aria-hidden="true"></i> Laisser un avis</button>`:''}
+        </div>
+        ${needAvis(cmd)?`
+        <div class="avis-form" id="avis-${cmd.id}" style="display:none;">
+          <div style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.75rem;">Votre avis sur cette commande</div>
+          <div class="stars-row" id="stars-${cmd.id}">${renderStars(cmd.id,0)}</div>
+          <textarea class="avis-textarea" id="txt-${cmd.id}" placeholder="Partagez votre expérience avec cette prestation…"></textarea>
+          <div style="display:flex;gap:0.75rem;margin-top:0.75rem;align-items:center;">
+            <button class="btn-sm primary" onclick="submitAvis('${cmd.id}')"><i class="ti ti-send" aria-hidden="true"></i> Envoyer l'avis</button>
+            <div class="avis-sent" id="avis-sent-${cmd.id}"><i class="ti ti-check" aria-hidden="true"></i> Avis envoyé — en attente de validation.</div>
+          </div>
+        </div>`:
+        cmd.avis?`
+        <div style="grid-column:1/-1;background:var(--vg-warm);border:1px solid var(--vg-border);padding:1rem;margin-top:0;">
+          <div style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vg-gold);margin-bottom:0.5rem;">Votre avis</div>
+          <div style="color:var(--vg-gold);margin-bottom:0.4rem;">${'★'.repeat(cmd.avisNote)}${'☆'.repeat(5-cmd.avisNote)}</div>
+          <p style="font-size:0.84rem;color:var(--vg-muted);font-style:italic;">${cmd.avisTexte}</p>
+        </div>`:''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleCard(id){
+  openCards[id]=!openCards[id];
+  const body=document.getElementById('body-'+id);
+  const hdr=document.getElementById('hdr-'+id);
+  const chev=document.getElementById('chev-'+id);
+  body.classList.toggle('open',openCards[id]);
+  hdr.classList.toggle('open',openCards[id]);
+  chev.classList.toggle('open',openCards[id]);
+}
+
+function showPage(p){
+  document.getElementById('page-commandes').classList.toggle('page-hidden',p!=='commandes');
+  document.getElementById('page-profil').classList.toggle('page-hidden',p!=='profil');
+  document.querySelectorAll('.side-link').forEach((el,i)=>{
+    el.classList.toggle('active',(p==='commandes'&&i===0)||(p==='profil'&&i===1));
+  });
+}
+
+function openAnnul(id){pendingAnnul=id;document.getElementById('modal-annul').classList.add('open');}
+function openModif(id){document.getElementById('modal-modif').classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function doAnnul(){
+  if(pendingAnnul){
+    const cmd=COMMANDES.find(c=>c.id===pendingAnnul);
+    if(cmd)cmd.statut='annulee';
+    closeModal('modal-annul');
+    renderCommandes();
+  }
+}
+function doModif(){closeModal('modal-modif');alert('Modifications enregistrées — à brancher sur le backend PHP.');}
+
+function submitAvis(id){
+  const note=starRatings[id]||0;
+  if(!note){alert('Veuillez attribuer une note.');return;}
+  document.getElementById('avis-'+id).querySelector('button').style.display='none';
+  const sentEl=document.getElementById('avis-sent-'+id);
+  sentEl.style.display='flex';
+}
+
+function saveProfil(){
+  document.getElementById('save-confirm').style.display='flex';
+  setTimeout(()=>{document.getElementById('save-confirm').style.display='none';},2500);
+}
+
+renderCommandes();
+// Auto-open first card
+toggleCard('CMD-2025-003');
+</script>
